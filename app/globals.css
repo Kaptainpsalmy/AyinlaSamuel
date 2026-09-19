@@ -1,26 +1,91 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─────────────────────────────────────────────────────────────
+   PsalmNova — Kinetic Minimal design tokens (both themes).
+   Dark is a DESIGNED PAIR, not an inversion:
+   accent shifts brighter, feature card becomes indigo, cards gain a border.
+   Theme is driven by data-theme on <html> (set pre-paint by ThemeScript).
+   ───────────────────────────────────────────────────────────── */
+
+:root,
+:root[data-theme="light"] {
+  --canvas:        #fafaf8;
+  --ink:           #0d0d0d;
+  --muted:         #59595a;
+  --accent:        #2b2bff;
+  --accent-2:      #2b2bff;
+  --card:          #ececE7;
+  --feature:       #0d0d0d;   /* black anchor card on a pale page */
+  --feature-ink:   #fafaf8;
+  --line:          rgba(13,13,13,0.10);
+  --line-strong:   rgba(13,13,13,0.18);
+  --ok:            #12b76a;
+  --warn:          #b25f00;
+  color-scheme: light;
 }
 
+:root[data-theme="dark"] {
+  --canvas:        #0e0e10;
+  --ink:           #f2f2f0;
+  --muted:         #9a9a9c;
+  --accent:        #5b5bff;   /* brighter — pure #2b2bff vibrates on near-black */
+  --accent-2:      #6f6fff;
+  --card:          #1c1c1f;
+  --feature:       #1b1b6e;   /* indigo — a black card would vanish here */
+  --feature-ink:   #ffffff;
+  --line:          rgba(255,255,255,0.10);
+  --line-strong:   rgba(255,255,255,0.18);
+  --ok:            #3ddc84;
+  --warn:          #ffb020;
+  color-scheme: dark;
+}
+
+/* Map tokens into Tailwind v4's theme so utilities like bg-canvas / text-ink exist */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas:      var(--canvas);
+  --color-ink:         var(--ink);
+  --color-muted:       var(--muted);
+  --color-accent:      var(--accent);
+  --color-accent-2:    var(--accent-2);
+  --color-card:        var(--card);
+  --color-feature:     var(--feature);
+  --color-feature-ink: var(--feature-ink);
+  --color-line:        var(--line);
+  --color-ok:          var(--ok);
+  --color-warn:        var(--warn);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-card: 22px;
+  --radius-pill: 9999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html { height: 100%; }
+body {
+  min-height: 100%;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3 { text-wrap: pretty; letter-spacing: -0.03em; }
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Accessible focus ring using the accent token */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
