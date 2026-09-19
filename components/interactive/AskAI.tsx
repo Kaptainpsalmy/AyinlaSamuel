@@ -31,6 +31,20 @@ export function AskAI() {
     setInput("");
     setMsgs((m) => [...m, { role: "user", text: question }, { role: "assistant", text: "" }]);
     setBusy(true);
+
+    // Accumulate the streamed answer in local variables and push the whole value
+    // each time. The state updater stays a pure "set", so React Strict Mode
+    // double-invoking it cannot double-append tokens.
+    let acc = "";
+    let srcs: string[] | undefined;
+    const flush = () =>
+      setMsgs((m) => {
+        const copy = [...m];
+        const i = copy.length - 1;
+        copy[i] = { ...copy[i], text: acc, sources: srcs };
+        return copy;
+      });
+
     try {
       const res = await fetch("/api/py/chat", {
         method: "POST",
@@ -53,20 +67,15 @@ export function AskAI() {
           if (body.trim() === "[DONE]") continue;
           try {
             const obj = JSON.parse(body);
-            setMsgs((m) => {
-              const copy = [...m];
-              const i = copy.length - 1;
-              const last = { ...copy[i] };
-              if (obj.text) last.text = last.text + obj.text;
-              if (obj.sources) last.sources = obj.sources;
-              copy[i] = last;
-              return copy;
-            });
+            if (obj.text) acc += obj.text;
+            if (obj.sources) srcs = obj.sources;
+            flush();
           } catch {}
         }
       }
     } catch {
-      setMsgs((m) => { const c = [...m]; c[c.length - 1].text = "Sorry, something went wrong."; return c; });
+      acc = acc || "Sorry, something went wrong.";
+      flush();
     } finally {
       setBusy(false);
     }
@@ -105,7 +114,7 @@ export function AskAI() {
               )}
               {msgs.map((m, i) => (
                 <div key={i} className={m.role === "user" ? "text-right" : ""}>
-                  <div className={"inline-block max-w-[85%] rounded-2xl px-4 py-2.5 text-sm " + (m.role === "user" ? "bg-ink text-canvas" : "bg-card text-ink")}>
+                  <div className={"inline-block max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-left text-sm " + (m.role === "user" ? "bg-ink text-canvas" : "bg-card text-ink")}>
                     {m.text || <Loader2 size={14} className="animate-spin" />}
                   </div>
                   {m.sources && m.sources.length > 0 && (
