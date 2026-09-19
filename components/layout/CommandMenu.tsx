@@ -1,22 +1,35 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { Command } from "cmdk";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import {
   Folder, FileText, Briefcase, User, FlaskConical, FileBadge, Mail,
   Copy, Download, Activity, Sparkles, Target,
-  SunMoon, Languages, Check,
+  SunMoon, Languages, Check, Clock, type LucideIcon,
 } from "lucide-react";
-import { GithubIcon as Github, LinkedinIcon as Linkedin, TwitterIcon as Twitter } from "@/components/common/BrandIcons";
+import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/common/BrandIcons";
 import { site, nav } from "@/content/site";
 import { useTheme } from "./ThemeProvider";
+import { useRecentCommands } from "@/lib/useRecentCommands";
 import { setLocale } from "@/i18n/actions";
 
-const navIcons: Record<string, typeof Folder> = {
+const navIcons: Record<string, LucideIcon> = {
   "/projects": Folder, "/notes": FileText, "/experience": Briefcase,
   "/about": User, "/sandbox": FlaskConical, "/cv": FileBadge, "/contact": Mail,
 };
+
+type Cmd = {
+  id: string;
+  group: "navigate" | "actions" | "social";
+  label: string;
+  keywords?: string[];
+  icon: React.ReactNode;
+  run: () => void;
+};
+
+const headingCls =
+  "[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted";
 
 export function CommandMenu() {
   const [open, setOpen] = useState(false);
@@ -24,8 +37,8 @@ export function CommandMenu() {
   const router = useRouter();
   const { toggle } = useTheme();
   const t = useTranslations("command");
+  const { recent, push } = useRecentCommands();
 
-  // open on Cmd/Ctrl+K
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
@@ -34,7 +47,6 @@ export function CommandMenu() {
       }
     }
     document.addEventListener("keydown", onKey);
-    // allow other components to open it via a custom event
     const openEvt = () => setOpen(true);
     document.addEventListener("open-command-menu", openEvt);
     return () => {
@@ -57,79 +69,101 @@ export function CommandMenu() {
     } catch {}
   }, []);
 
+  // Single source of truth for all commands (data driven so recents can reference by id).
+  const commands = useMemo<Cmd[]>(() => {
+    const navCmds: Cmd[] = nav.map((n) => ({
+      id: `nav:${n.href}`,
+      group: "navigate",
+      label: n.label,
+      icon: (() => { const I = navIcons[n.href] ?? Folder; return <I size={16} />; })(),
+      run: () => go(n.href),
+    }));
+
+    const actionCmds: Cmd[] = [
+      { id: "copy-email", group: "actions", label: copied ? t("copied") : t("copyEmail"),
+        keywords: ["email", "mail", "contact"],
+        icon: copied ? <Check size={16} className="text-ok" /> : <Copy size={16} />,
+        run: copyEmail },
+      { id: "download-cv", group: "actions", label: t("downloadCv"),
+        keywords: ["resume", "download"], icon: <Download size={16} />, run: () => go("/cv") },
+      { id: "view-now", group: "actions", label: t("viewNow"),
+        keywords: ["now", "live", "activity", "status"], icon: <Activity size={16} />,
+        run: () => go("/api/py/now", true) },
+      { id: "ask-ai", group: "actions", label: t("askAi"),
+        keywords: ["ai", "chat", "assistant"], icon: <Sparkles size={16} />,
+        run: () => { setOpen(false); document.dispatchEvent(new CustomEvent("open-ai")); } },
+      { id: "match-jd", group: "actions", label: t("matchJd"),
+        keywords: ["job", "jd", "match", "hire"], icon: <Target size={16} />, run: () => go("/contact") },
+      { id: "toggle-theme", group: "actions", label: t("toggleTheme"),
+        keywords: ["dark", "light", "theme", "mode"], icon: <SunMoon size={16} />, run: () => toggle() },
+      { id: "switch-language", group: "actions", label: t("switchLanguage"),
+        keywords: ["language", "yoruba", "english", "ede"], icon: <Languages size={16} />,
+        run: async () => { const cur = document.documentElement.lang; await setLocale(cur === "yo" ? "en" : "yo"); setOpen(false); router.refresh(); } },
+    ];
+
+    const socialCmds: Cmd[] = [
+      { id: "github", group: "social", label: t("openGithub"), keywords: ["github", "code"], icon: <GithubIcon size={16} />, run: () => go(site.socials.github, true) },
+      { id: "linkedin", group: "social", label: t("openLinkedin"), keywords: ["linkedin"], icon: <LinkedinIcon size={16} />, run: () => go(site.socials.linkedin, true) },
+      { id: "twitter", group: "social", label: t("openTwitter"), keywords: ["twitter", "x"], icon: <TwitterIcon size={16} />, run: () => go(site.socials.twitter, true) },
+    ];
+
+    return [...navCmds, ...actionCmds, ...socialCmds];
+  }, [t, copied, copyEmail, go, router, toggle]);
+
+  const byId = useMemo(() => Object.fromEntries(commands.map((c) => [c.id, c])), [commands]);
+  const recentCmds = recent.map((id) => byId[id]).filter(Boolean) as Cmd[];
+
+  const select = useCallback((c: Cmd) => { push(c.id); c.run(); }, [push]);
+
+  const renderItem = (c: Cmd, keyPrefix = "") => (
+    <Command.Item
+      key={keyPrefix + c.id}
+      value={c.label + " " + (c.keywords ?? []).join(" ")}
+      keywords={c.keywords}
+      onSelect={() => select(c)}
+      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-ink aria-selected:bg-card"
+    >
+      {c.icon} {c.label}
+    </Command.Item>
+  );
+
+  const group = (g: Cmd["group"]) => commands.filter((c) => c.group === g);
+
   return (
     <Command.Dialog
       open={open}
       onOpenChange={setOpen}
       label={t("placeholder")}
       overlayClassName="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-      contentClassName="fixed left-1/2 top-[15vh] z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-canvas shadow-2xl"
+      contentClassName="fixed left-1/2 top-[12vh] z-50 w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-canvas shadow-2xl"
     >
       <Command.Input
         placeholder={t("placeholder")}
         className="w-full border-b border-line bg-transparent px-4 py-4 text-[15px] text-ink outline-none placeholder:text-muted"
       />
-      <Command.List className="max-h-[50vh] overflow-y-auto p-2">
+      <Command.List className="max-h-[62vh] overflow-y-auto p-2">
         <Command.Empty className="px-3 py-6 text-center text-sm text-muted">
           No results.
         </Command.Empty>
 
-        <Command.Group heading={t("groupNavigate")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted">
-          {nav.map((n) => {
-            const Icon = navIcons[n.href] ?? Folder;
-            return (
-              <Item key={n.href} onSelect={() => go(n.href)}>
-                <Icon size={16} /> {n.label}
-              </Item>
-            );
-          })}
+        {recentCmds.length > 0 && (
+          <Command.Group heading={t("groupRecent")} className={headingCls}>
+            {recentCmds.map((c) => renderItem(c, "recent:"))}
+          </Command.Group>
+        )}
+
+        <Command.Group heading={t("groupNavigate")} className={headingCls}>
+          {group("navigate").map((c) => renderItem(c))}
         </Command.Group>
 
-        <Command.Group heading={t("groupActions")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted">
-          <Item onSelect={copyEmail} keywords={["email", "mail", "contact"]}>
-            {copied ? <Check size={16} className="text-ok" /> : <Copy size={16} />}
-            {copied ? t("copied") : t("copyEmail")}
-          </Item>
-          <Item onSelect={() => go("/cv")} keywords={["resume", "download"]}>
-            <Download size={16} /> {t("downloadCv")}
-          </Item>
-          <Item onSelect={() => go("/api/py/now", true)} keywords={["now", "live", "activity", "status"]}>
-            <Activity size={16} /> {t("viewNow")}
-          </Item>
-          <Item onSelect={() => { setOpen(false); document.dispatchEvent(new CustomEvent("open-ai")); }} keywords={["ai", "chat", "assistant"]}>
-            <Sparkles size={16} /> {t("askAi")}
-          </Item>
-          <Item onSelect={() => go("/contact")} keywords={["job", "jd", "match", "hire"]}>
-            <Target size={16} /> {t("matchJd")}
-          </Item>
-          <Item onSelect={() => { toggle(); }} keywords={["dark", "light", "theme", "mode"]}>
-            <SunMoon size={16} /> {t("toggleTheme")}
-          </Item>
-          <Item onSelect={async () => { const cur = document.documentElement.lang; await setLocale(cur === "yo" ? "en" : "yo"); setOpen(false); router.refresh(); }} keywords={["language", "yoruba", "english", "ede"]}>
-            <Languages size={16} /> {t("switchLanguage")}
-          </Item>
+        <Command.Group heading={t("groupActions")} className={headingCls}>
+          {group("actions").map((c) => renderItem(c))}
         </Command.Group>
 
-        <Command.Group heading={t("groupSocial")} className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-widest [&_[cmdk-group-heading]]:text-muted">
-          <Item onSelect={() => go(site.socials.github, true)}><Github size={16} /> {t("openGithub")}</Item>
-          <Item onSelect={() => go(site.socials.linkedin, true)}><Linkedin size={16} /> {t("openLinkedin")}</Item>
-          <Item onSelect={() => go(site.socials.twitter, true)}><Twitter size={16} /> {t("openTwitter")}</Item>
+        <Command.Group heading={t("groupSocial")} className={headingCls}>
+          {group("social").map((c) => renderItem(c))}
         </Command.Group>
       </Command.List>
     </Command.Dialog>
-  );
-}
-
-function Item({
-  children, onSelect, keywords,
-}: { children: React.ReactNode; onSelect: () => void; keywords?: string[] }) {
-  return (
-    <Command.Item
-      onSelect={onSelect}
-      keywords={keywords}
-      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-ink aria-selected:bg-card"
-    >
-      {children}
-    </Command.Item>
   );
 }

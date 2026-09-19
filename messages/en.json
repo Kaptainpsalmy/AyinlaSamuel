@@ -1,22 +1,39 @@
 {
   "nav": {
-    "projects": "Projects", "notes": "Notes", "experience": "Experience",
-    "about": "About", "sandbox": "Sandbox", "cv": "CV", "contact": "Contact"
+    "projects": "Projects",
+    "notes": "Notes",
+    "experience": "Experience",
+    "about": "About",
+    "sandbox": "Sandbox",
+    "cv": "CV",
+    "contact": "Contact"
   },
   "common": {
-    "menu": "Menu", "close": "Close", "backToTop": "Back to top",
-    "searchCommands": "Search and commands", "toggleTheme": "Toggle theme",
-    "language": "Language", "availableForWork": "Available for work",
+    "menu": "Menu",
+    "close": "Close",
+    "backToTop": "Back to top",
+    "searchCommands": "Search and commands",
+    "toggleTheme": "Toggle theme",
+    "language": "Language",
+    "availableForWork": "Available for work",
     "underConstruction": "Under construction"
   },
   "command": {
     "placeholder": "Type a command or search...",
-    "groupNavigate": "Navigate", "groupActions": "Actions", "groupSocial": "Social",
-    "copyEmail": "Copy email address", "downloadCv": "Download CV",
-    "viewNow": "View live activity", "askAi": "Ask the AI assistant",
+    "groupNavigate": "Navigate",
+    "groupActions": "Actions",
+    "groupSocial": "Social",
+    "copyEmail": "Copy email address",
+    "downloadCv": "Download CV",
+    "viewNow": "View live activity",
+    "askAi": "Ask the AI assistant",
     "matchJd": "Match to a job description",
-    "openGithub": "Open GitHub", "openLinkedin": "Open LinkedIn", "openTwitter": "Open Twitter",
-    "toggleTheme": "Toggle theme", "switchLanguage": "Switch language",
-    "copied": "Copied"
+    "openGithub": "Open GitHub",
+    "openLinkedin": "Open LinkedIn",
+    "openTwitter": "Open Twitter",
+    "toggleTheme": "Toggle theme",
+    "switchLanguage": "Switch language",
+    "copied": "Copied",
+    "groupRecent": "Recent"
   }
 }
