@@ -85,7 +85,7 @@ async def _retrieve(query: str, k: int = 4):
 
 
 async def _stream_answer(query: str, context_chunks):
-    key = os.getenv("OPENROUTER_API_KEY")
+    key = settings.groq_api_key or os.getenv("GROQ_API_KEY")
     sources = sorted({c["source"] for c in context_chunks})
     context = "\n\n".join(f"[{c['source']}] {c['text']}" for c in context_chunks)
 
@@ -105,7 +105,8 @@ async def _stream_answer(query: str, context_chunks):
         "Do not invent projects or facts."
     )
     payload = {
-        "model": "openai/gpt-4o-mini",
+        "model": "openai/gpt-oss-20b",
+        "temperature": 0.3,
         "stream": True,
         "messages": [
             {"role": "system", "content": system},
@@ -114,7 +115,7 @@ async def _stream_answer(query: str, context_chunks):
     }
     try:
         async with httpx.AsyncClient(timeout=30) as c:
-            async with c.stream("POST", "https://openrouter.ai/api/v1/chat/completions",
+            async with c.stream("POST", "https://api.groq.com/openai/v1/chat/completions",
                                  headers={"Authorization": f"Bearer {key}"}, json=payload) as r:
                 async for line in r.aiter_lines():
                     if line.startswith("data: "):

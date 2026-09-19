@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     upstash_redis_rest_token: str | None = None
     resend_api_key: str | None = None
     github_token: str | None = None
+    groq_api_key: str | None = None
 
     version: str = "0.1.0"
 
