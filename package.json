@@ -9,9 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "lucide-react": "^1.47.0",
+    "motion": "^13.4.0",
     "next": "16.3.5",
+    "next-intl": "^4.14.5",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -21,7 +28,16 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "velite": "^0.4.0"
   },
-  "packageManager": "pnpm@12.4.2"
+  "packageManager": "pnpm@12.4.2",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "@parcel/watcher",
+      "esbuild",
+      "sharp"
+    ]
+  }
 }

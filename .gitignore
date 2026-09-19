@@ -39,3 +39,22 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# reference site (his — for our eyes only, never deployed)
+/reference/
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# velite content output
+.velite/
+
+# env
+.env*.local
+.env
+
+# but DO commit the example (no secrets)
+!.env.example
