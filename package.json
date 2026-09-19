@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "velite && next dev --turbopack",
-    "build": "velite && next build --turbopack",
+    "build": "velite && node scripts/build_rag_index.mjs && next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "velite": "velite",

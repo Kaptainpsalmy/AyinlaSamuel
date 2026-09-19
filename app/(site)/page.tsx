@@ -6,6 +6,8 @@ import { experience } from "@/content/experience";
 import { services } from "@/content/services";
 import { allSkills } from "@/content/skills";
 import { RotatingHero } from "@/components/hero/RotatingHero";
+import { NowStrip } from "@/components/sections/NowStrip";
+import { ContribGraph } from "@/components/sections/ContribGraph";
 import { FeaturedReel } from "@/components/sections/FeaturedReel";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -39,6 +41,7 @@ export default function Home() {
               Get in touch
             </Link>
           </div>
+          <div className="mt-8"><NowStrip /></div>
         </div>
         <RotatingHero />
       </section>
@@ -63,6 +66,13 @@ export default function Home() {
           <Link href="/about" className="mt-6 inline-flex items-center gap-1.5 text-sm text-accent-2 hover:underline">
             More about me <ArrowRight size={14} />
           </Link>
+        </section>
+      </Reveal>
+
+      {/* 3b. CONTRIBUTIONS */}
+      <Reveal>
+        <section className="border-t border-line py-16">
+          <ContribGraph />
         </section>
       </Reveal>
 

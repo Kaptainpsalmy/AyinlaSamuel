@@ -8,6 +8,7 @@ import { Gallery } from "@/components/projects/Gallery";
 import { EvidenceBlock } from "@/components/projects/EvidenceBlock";
 import { PrevNext } from "@/components/projects/PrevNext";
 import { ShareButton } from "@/components/common/ShareButton";
+import { ViewCounter } from "@/components/projects/ViewCounter";
 import { MDXContent } from "@/components/common/MDXContent";
 
 export function generateStaticParams() {
@@ -71,6 +72,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
             </a>
           )}
           <ShareButton title={project.title} />
+          <div className="ml-auto"><ViewCounter slug={project.slug} /></div>
         </div>
       </header>
 

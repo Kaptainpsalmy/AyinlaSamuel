@@ -7,7 +7,7 @@ Kept lean for serverless cold starts: no ML libs. The OpenAPI docs page at
 from fastapi import FastAPI
 
 from api.core.config import settings
-from api.routers import health, now, github, contact, views, resume
+from api.routers import health, now, github, contact, views, resume, chat
 
 app = FastAPI(
     title="PsalmNova API",
@@ -21,5 +21,5 @@ app = FastAPI(
     redoc_url="/api/py/redoc",
 )
 
-for r in (health, now, github, contact, views, resume):
+for r in (health, now, github, contact, views, resume, chat):
     app.include_router(r.router)
