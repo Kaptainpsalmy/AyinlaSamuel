@@ -1,0 +1,91 @@
+SABRE WHATSAPP HELPDESK BOT — RAG pipeline demo
+Local run: pgvector (Docker) + all-MiniLM-L6-v2 embeddings + Groq LLM
+Knowledge base: sample_sabre_guide.txt (4 chunks, 384-dim vectors)
+No live WhatsApp — driven through the bot's own pipeline.
+
+======================================================================
+AGENT: How do I cancel a waitlisted segment in Sabre?
+BOT:
+**Answer**
+To cancel a waitlisted segment in a PNR, use the **WPNC** format.
+
+**Format & explanation**
+`WPNC‡LAX/ORD‡12JAN‡HK1`
+- `LAX/ORD` – city pair (origin/destination) of the segment
+- `12JAN` – date of the segment
+- `HK1` – number of seats to cancel (e.g., 1 seat)
+
+**Example**
+`WPNC‡LAX/ORD‡12JAN‡HK1` – removes one waitlisted seat on the Los Angeles‑to‑Chicago segment dated January 12.
+
+**Important notes**
+- Use the exact city pair and date that match the segment you wish to cancel.
+- If you need to cancel all waitlist segments before a certain date, use **WPNCB** (`WPNCB‡12JAN`).
+- For a specific segment number, use **WPNCS** (`WPNCS‡3`).
+
+**Source**
+*Section 4.1 WPNC – Waitlist PNR Cancel* in sample_sabre_guide.txt.
+[intent=format_query | retrieval=34ms | llm=1237ms | tokens=2048]
+
+======================================================================
+AGENT: What does WPNCB do?
+BOT:
+**Answer**
+`WPNCB` cancels every wait‑listed segment in a PNR that is scheduled before a specified cutoff date.
+
+**Format & explanation**
+`WPNCB‡12JAN`
+- `12JAN` – the cutoff date; all wait‑list segments dated earlier than this will be removed.
+
+**Example**
+`WPNCB‡12JAN` – deletes all wait‑listed segments in the PNR that occur before January 12.
+
+**Important notes**
+- Use the exact date format (`DDMMM`).
+- This command does not target a specific segment number—use `WPNCS` for that.
+
+**Source**
+*Section 4.2 WPNCB – Waitlist PNR Cancel Before* in sample_sabre_guide.txt.
+[intent=format_query | retrieval=23ms | llm=755ms | tokens=1856]
+
+======================================================================
+AGENT: How do I add a passenger to a waitlist?
+BOT:
+**Answer**
+To add a passenger to a waitlist, use the **WPN** format.
+
+**Format & explanation**
+`WPN‡LAX/ORD‡12JAN‡HK1‡NAME/SMITH/JOHN`
+- `LAX/ORD` – city pair (origin/destination)
+- `12JAN` – travel date
+- `HK1` – number of seats to wait‑list
+- `NAME/SMITH/JOHN` – passenger name (last/first)
+
+**Example**
+`WPN‡LAX/ORD‡12JAN‡HK1‡NAME/SMITH/JOHN` – adds John Smith to the waitlist for one seat on the Los Angeles‑to‑Chicago flight on January 12.
+
+**Important notes**
+- Use the exact city pair and date that match the sold‑out flight.
+- The passenger name must be in the `NAME/Last/First` format.
+- `HK1` indicates how many seats the passenger is waiting for.
+
+**Source**
+*Section 12.1 WPN – Waitlist PNR* in sample_sabre_guide.txt.
+[intent=format_query | retrieval=23ms | llm=701ms | tokens=2373]
+
+======================================================================
+AGENT: What is the format to issue an electronic ticket?
+BOT:
+**Answer**
+To issue an electronic ticket in Sabre, use the `ET` format.
+
+**Format**
+`ET`
+
+**Explanation**
+The `ET` command tells Sabre to generate an electronic ticket for the current PNR. No additional parameters are required.
+
+**Source**
+*Section 12.2 ET – Electronic Ticket* in sample_sabre_guide.txt.
+[intent=format_query | retrieval=26ms | llm=4327ms | tokens=2191]
+

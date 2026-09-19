@@ -1,0 +1,59 @@
+---
+title: IASG Cooperative
+tagline: A savings and loans platform serving five affiliated companies.
+type: client
+categories: [Fintech, Backend, Payments]
+stack: [Django, DRF, PostgreSQL, Celery, Flutterwave, Resend, Cloudinary]
+year: "2026"
+role: Backend Engineer
+status: live
+featured: true
+order: 3
+links:
+  live: "https://iasg-cooperative-backend.vercel.app"
+  docs: "https://iasg-cooperative-backend.vercel.app/api/docs/"
+screenshots:
+  - /images/iasg/IMG_8608.PNG
+  - /images/iasg/IMG_8609.PNG
+  - /images/iasg/IMG_8610.PNG
+  - /images/iasg/IMG_8611.PNG
+  - /images/iasg/IMG_8613.PNG
+  - /images/iasg/IMG_8614.PNG
+evidence:
+  verified: "Live in production with a public Swagger UI at /api/docs/."
+problem: >
+  Members across five affiliated companies needed a shared cooperative: savings,
+  loan applications with guarantor sign-off, salary-deduction repayment, dividends,
+  and statements, all with an admin portal to run it.
+solution: >
+  A Django REST backend on serverless Postgres with Flutterwave payments, member and
+  admin flows, PDF and CSV statements, and full OpenAPI docs. Deployed and live.
+verify: true
+---
+
+## Overview
+
+IASG Cooperative is a savings and loans platform serving members across five affiliated
+companies: Interguide Air, Interguide Academy, Sabre Travel Network, Wisefair, and GolfView.
+It is **live in production** with a public API and Swagger docs.
+
+## What I built
+
+- **Member flows**: signup with admin approval, savings accounts with Flutterwave-backed
+  deposits, loan applications with guarantor sign-off, and repayment (manual or monthly
+  salary-deduction batches).
+- **Money movement**: dividend crediting, real-time transaction notifications, and member
+  statement generation as PDF and CSV.
+- **Admin portal** for staff to run verification, approvals, disbursement, and configuration.
+- Rate limiting, login-lockout protection, and a documented OpenAPI schema.
+
+## Stack
+
+Django 5.2 with Django REST Framework, JWT auth, serverless Neon Postgres, Celery,
+Flutterwave for payments and BVN verification, Resend for email, Cloudinary for uploads,
+and drf-spectacular for OpenAPI. Deployed on Vercel.
+
+## Proof
+
+The backend is live at the link above, and the Swagger UI is public: it shows the full API
+surface with no login required. The screenshots are the cooperative interface in use.

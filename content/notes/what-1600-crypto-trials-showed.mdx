@@ -1,0 +1,30 @@
+---
+title: What 1,600 verified crypto trials showed
+excerpt: Comparing four block ciphers fairly means verifying against known-good test vectors, not just round-trip self-consistency.
+date: 2026-07-30
+tags: [cryptography, benchmarking, research]
+verify: true
+---
+
+For my final-year project I compared four symmetric block ciphers, AES, DES, 3DES, and
+Blowfish, empirically. The interesting part was not the result. It was making the comparison
+**fair**.
+
+## Self-consistency is not correctness
+
+A cipher that encrypts and then decrypts back to the original looks correct, but round-trip
+self-consistency only proves your implementation is internally consistent. It does not prove
+it matches the standard. A subtly wrong AES will still round-trip.
+
+## Verify against reference vectors
+
+The fix is to test against **NIST and Schneier reference test vectors**: known inputs with
+known correct outputs. That is the difference between "my code agrees with itself" and "my
+code agrees with the specification."
+
+## The numbers
+
+Across controlled, repeated conditions, the suite ran 1,600 trials and got 1,600 correct,
+verified against those reference vectors. Only then are the performance and security
+comparisons worth anything, because you know all four ciphers are actually correct before you
+start measuring them against each other.

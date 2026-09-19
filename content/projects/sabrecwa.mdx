@@ -1,0 +1,69 @@
+---
+title: SabreCWA Assessment Platform
+tagline: A scalable test and evaluation system for a travel-technology company.
+type: client
+categories: [Assessment, EdTech, Backend]
+stack: [Python, FastAPI, SQLAlchemy, PostgreSQL, Alembic, JWT, Next.js, Tailwind]
+year: "2026"
+role: Backend Engineer (team of 4)
+duration: 4 months
+status: internal
+featured: true
+order: 1
+links:
+  live: ""
+screenshots:
+  - /images/sabrecwa/01-dashboard.png
+  - /images/sabrecwa/02-tests.png
+  - /images/sabrecwa/04-analytics.png
+  - /images/sabrecwa/05-monitor.png
+  - /images/sabrecwa/06-results.png
+  - /images/sabrecwa/07-certificates.png
+  - /images/sabrecwa/01-landing.png
+  - /images/sabrecwa/02-login.png
+evidence:
+  verified: "Ran the full stack locally against a throwaway Postgres, seeded a demo admin plus a published test, and captured 7 authenticated admin pages (dashboard, tests, analytics, live monitor, results, certificates, settings)."
+problem: >
+  Sabre needed an in-house platform to author, deliver, and analyze assessments
+  at scale, with strong controls: role-based access, anti-cheat, timed sittings,
+  auto-grading, certificates, and reporting. Off-the-shelf tools did not fit the
+  workflow or the control requirements.
+solution: >
+  A FastAPI backend on PostgreSQL with a Next.js admin, built by a team of four
+  with Samuel owning the backend. Seven question types, three roles with
+  impersonation, server-authoritative timers, anti-cheat, certificates, analytics,
+  and CSV export.
+verify: true
+---
+
+## Overview
+
+SabreCWA is an assessment and test-management platform: organizations author tests,
+deliver them under controlled conditions, and analyze the results. I owned the
+**backend**, built with FastAPI and PostgreSQL, as part of a four-person team.
+
+## What I built
+
+- **Auth and roles.** JWT authentication with bcrypt, and three roles (author, admin,
+  super_admin) with an admin impersonation flow for support.
+- **Seven question types**, most auto-graded: single choice, multiple choice, yes/no,
+  short answer, essay, file upload, and drawing.
+- **Test lifecycle**: draft, active, scheduled, and closed, with open-link, group-password,
+  and one-time-code access modes.
+- **Server-authoritative timers** so the clock cannot be gamed from the client.
+- **Anti-cheat**: tab-switch detection, copy/paste blocking, full-screen enforcement, and a
+  warning system.
+- **Certificates** issued automatically on passing, plus analytics (score distributions,
+  per-question difficulty) and CSV export.
+
+## Stack
+
+FastAPI, async SQLAlchemy 2.0, Alembic migrations, PostgreSQL, JWT with bcrypt, and a
+Next.js + Tailwind admin frontend.
+
+## Proof
+
+I ran the whole stack locally against a disposable Postgres database, seeded a demo
+super-admin and a published sample test, and logged in to capture the real authenticated
+admin: dashboard, test list, analytics, live monitor (with the websocket auto-refresh
+indicator), results, certificates, and settings. The screenshots above are from that run.

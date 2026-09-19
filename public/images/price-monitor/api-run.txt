@@ -1,0 +1,58 @@
+# Flight Price Monitor — verified run 2026-09-18 12:45
+# Isolated SQLite DB, email disabled. No production services touched.
+
+$ POST /api/flights
+{
+  "flight": {
+    "flight_number": "SA771",
+    "id": 2,
+    "links": {
+      "self": "http://127.0.0.1:5099/api/flights/2"
+    }
+  },
+  "message": "Flight created successfully",
+  "success": true
+}
+
+$ POST /api/flights/2/force-drop
+{
+  "data": {
+    "alert_triggered": true,
+    "drop_percentage": 10.0,
+    "flight_id": 2,
+    "flight_number": "SA771",
+    "new_price": 1116.0,
+    "old_price": 1240.0
+  },
+  "message": "Forced 10% drop applied",
+  "success": true
+}
+
+$ GET /api/stats/summary
+{
+  "statistics": {
+    "alerts": {
+      "average_drop_percentage": 10.0,
+      "today": 2,
+      "total": 2
+    },
+    "flights": {
+      "active": 2,
+      "inactive": 0,
+      "total": 2
+    },
+    "highlights": {
+      "biggest_drop": {
+        "drop_percentage": 10.0,
+        "flight": "SA204",
+        "price": 801.0
+      },
+      "most_alerted_flight": {
+        "alert_count": 1,
+        "flight_number": "SA204"
+      }
+    }
+  },
+  "success": true,
+  "timestamp": "2026-09-18T11:45:31.972895"
+}

@@ -1,0 +1,54 @@
+---
+title: Smart Travel Agent
+tagline: An autonomous agent that searches flights, monitors prices, and answers document questions.
+type: personal
+categories: [AI, Agentic, LangChain]
+stack: [Python, FastAPI, Streamlit, LangChain, CrewAI, Groq]
+year: "2026"
+role: Solo Builder
+status: live
+featured: true
+order: 5
+links:
+  live: "https://smart-travel-agent-o5twu2efk65raitds6bij6.streamlit.app/"
+screenshots:
+  - /images/smart-travel-agent/01-landing.png
+  - /images/smart-travel-agent/02-agent-chat.png
+  - /images/smart-travel-agent/03-flight-search.png
+  - /images/smart-travel-agent/04-multi-agent.png
+  - /images/smart-travel-agent/05-price-monitor.png
+  - /images/smart-travel-agent/06-document-qa.png
+  - /images/smart-travel-agent/07-profile.png
+evidence:
+  verified: "Ran the agent for real: it called the flight-search tool, then reasoned about a mismatch in the tool's output and offered to retry. Genuine agentic tool-use plus validation."
+problem: >
+  Flight search, price monitoring, and travel Q&A are separate chores. A single
+  agent that plans, calls the right tool, and reasons about the result is far more useful.
+solution: >
+  A LangChain-driven agent behind a FastAPI backend and Streamlit UI, with flight
+  search, booking history, background price monitoring, PDF question-answering over a
+  vector store, and a multi-agent (CrewAI) mode.
+verify: true
+---
+
+## Overview
+
+Smart Travel Agent is an autonomous AI agent for travel: it searches flights, monitors
+prices, and answers questions about uploaded documents. It plans multi-step tasks and
+decides which tool to use for each.
+
+## What I built
+
+- A **LangChain agent** that chooses tools (flight search, weather, booking) based on the
+  request, with live-API data and a simulated fallback.
+- **Background price monitoring** for saved bookings.
+- **Document Q&A**: upload a PDF, ask questions, get answers from a vector store.
+- A **multi-agent mode** (CrewAI) where four specialized agents collaborate on a request.
+- A FastAPI backend with an OpenAPI surface and a Streamlit UI.
+
+## Proof
+
+In a real run, I asked the agent to find flights. It called the flight-search tool, got the
+data back, and then **reasoned about a mismatch** in the tool's output (the results were for
+the wrong origin airport), flagged it, and offered to retry. That is genuine agentic behavior:
+tool use plus validation of the result, not a scripted happy path.

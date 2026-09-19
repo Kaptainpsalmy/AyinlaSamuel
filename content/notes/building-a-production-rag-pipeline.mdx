@@ -1,0 +1,34 @@
+---
+title: Building a production RAG pipeline
+excerpt: What it actually takes to ship retrieval-augmented generation that does not hallucinate, from a real Sabre helpdesk bot.
+date: 2026-08-20
+tags: [RAG, AI, pgvector, backend]
+verify: true
+---
+
+Retrieval-augmented generation is easy to demo and hard to ship. The demo is: embed a
+question, find similar chunks, stuff them in a prompt, get an answer. The production
+version, the one I built for a Sabre helpdesk bot, has to be right, because a wrong GDS
+command has consequences.
+
+## Grounding beats fluency
+
+The single most important rule: the model answers **only** from retrieved context, cites its
+source, and refuses when the context does not support an answer. Fluent but unsourced answers
+are worse than "I do not know."
+
+## Hybrid retrieval
+
+Pure vector search misses exact matches (a specific command code), and pure keyword search
+misses paraphrases. I used both, vector similarity plus keyword, and re-ranked the union for
+the final context.
+
+## The unglamorous parts
+
+- **A FAQ cache** so common questions never hit the LLM.
+- **Confidence scoring** with a human-handoff fallback.
+- **Circuit breakers and retries** around the model and the database.
+- **Local embeddings** so there is no per-query embedding cost.
+
+The result answered real format questions with grounded, cited responses. The lesson: the
+retrieval and the guardrails are the product; the LLM call is the easy part.

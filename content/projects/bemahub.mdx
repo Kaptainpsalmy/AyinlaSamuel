@@ -1,0 +1,61 @@
+---
+title: BemaHub
+tagline: A gospel-creator platform with campaigns, a wallet ledger, and payments.
+type: client
+categories: [Platform, Fintech, Community]
+stack: [PHP, WordPress, MySQL, Paystack, PayPal, AWS S3, Next.js]
+year: "2026"
+role: Backend Owner
+status: live
+featured: true
+order: 4
+links:
+  live: "https://app.bemahub.com/"
+screenshots:
+  - /images/bemahub/01-live-landing.png
+  - /images/bemahub/02-campaigns.png
+  - /images/bemahub/03-campaign-detail.png
+  - /images/bemahub/04-events.png
+  - /images/bemahub/05-blogs.png
+evidence:
+  verified: "Live in production at app.bemahub.com. I own the backend; the platform runs real campaigns, a wallet ledger, and payments."
+problem: >
+  BEMA needed a platform to support gospel music and Christian creators: campaigns
+  with tiered access, a wallet and impact ledger, referrals, events, and payments,
+  all governed by one set of business rules.
+solution: >
+  A WordPress plugin exposing a BMH REST API as the single source of truth for the
+  business logic, with a companion payments plugin, and a Next.js frontend.
+verify: true
+---
+
+## Overview
+
+BemaHub is a gospel-creator platform: it runs campaigns, a wallet and Recognized Impact
+ledger, referrals, events, and payments in support of Christian music and creators. It is
+**live in production** at app.bemahub.com. I own the **backend**.
+
+Note: I engineered the backend of this platform. The campaigns and creators shown are
+BEMA's, not my own content.
+
+## What I built
+
+- The **BMH REST API** (a WordPress plugin) as the single source of truth for business
+  rules: campaign metrics, access-level resolution, referral (LoopCode) generation, and
+  the Recognized Impact calculation.
+- A companion **payments plugin** wiring Paystack and PayPal, with webhooks and access-grant
+  triggers.
+- Protected media via S3 signed URLs, and integrations for merchandise and real-time features.
+- A **149-test launch-readiness verification suite** that re-derives platform state from the
+  live database.
+
+## Stack
+
+PHP on WordPress, MySQL, a REST API under `/wp-json/bmh/v1`, JWT and social auth, Paystack
+and PayPal, AWS S3, and WordPress Action Scheduler for background jobs.
+
+## Proof
+
+The public frontend (landing, campaigns, a full campaign detail, events, blogs) is captured
+above from the live site. The platform is running real campaigns with tiered access, a wallet,
+and live payments.

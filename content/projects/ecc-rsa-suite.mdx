@@ -1,0 +1,49 @@
+---
+title: ECC-RSA Hybrid Cryptosystem
+tagline: A hybrid encryption suite with a live packet inspector and attack simulator.
+type: final-year
+categories: [Cryptography, Security, Desktop]
+stack: [Python, PySide6, cryptography, pycryptodome]
+year: "2026"
+role: Solo Builder
+status: archived
+featured: true
+order: 6
+screenshots:
+  - /images/ecc-rsa-suite/ecc-01-secure-exchange-keys-generated.png
+  - /images/ecc-rsa-suite/ecc-03-secure-exchange-verified.png
+  - /images/ecc-rsa-suite/ecc-04-benchmark.png
+  - /images/ecc-rsa-suite/ecc-05-attack-simulator.png
+  - /images/ecc-rsa-suite/ecc-06-key-inspector.png
+evidence:
+  verified: "Drove the real crypto flow: generated an ECC keypair plus RSA-2048, encrypted a message, and verified the signature and recovered the plaintext. A full hybrid round-trip, captured mid-flow with the packet inspector showing the bytes on the wire."
+problem: >
+  Symmetric ciphers are fast but need a shared key; asymmetric ciphers solve key
+  exchange but are slow. A hybrid scheme combines them, and a teaching tool should
+  make the whole exchange visible.
+solution: >
+  A desktop suite that performs an ECDH key agreement, AES payload encryption, and an
+  RSA-2048 signature, with a packet inspector that shows the exact bytes transmitted,
+  a benchmark tab, and an attack simulator.
+verify: true
+---
+
+## Overview
+
+A hybrid cryptosystem desktop application: it combines elliptic-curve key agreement, AES
+payload encryption, and RSA signatures, and makes the entire secure exchange visible.
+
+## What I built
+
+- A **Secure Exchange** flow: generate keys, encrypt and send, receive and verify, with a
+  **packet inspector** that shows the sender's ECC public key, the AES ciphertext, and the
+  RSA signature exactly as transmitted. Private keys are never displayed.
+- A **Benchmark** tab comparing performance.
+- An **Attack Simulator** and a **Key Inspector**.
+
+## Proof
+
+I drove the real flow: the app generated an ECC keypair and RSA-2048, encrypted a message,
+transmitted it, and on the receiving side verified the signature and recovered the plaintext.
+The packet inspector showed the actual bytes on the wire, and the status read "verified,
+plaintext recovered successfully." A complete hybrid round-trip, captured mid-flow.

@@ -1,0 +1,48 @@
+---
+title: AutoEDA
+tagline: Automated data cleaning and exploratory analysis, no code required.
+type: personal
+categories: [Data Science, Analytics, Web]
+stack: [Python, Flask, Pandas, NumPy, Matplotlib, Seaborn]
+year: "2026"
+role: Solo Builder
+status: live
+featured: false
+order: 9
+links:
+  live: "https://autoeda-one.vercel.app"
+screenshots:
+  - /images/autoeda/01-landing.png
+  - /images/autoeda/02-results.png
+  - /images/autoeda/chart-heatmap.png
+  - /images/autoeda/chart-hist.png
+  - /images/autoeda/chart-boxplot.png
+evidence:
+  verified: "Fed a 423-row messy CSV it had never seen (missing values, duplicates, an outlier). It auto-typed all 8 columns, removed the duplicates (423 to 421 rows), and generated a histogram, heatmap, boxplot, and barchart."
+problem: >
+  Exploratory data analysis is repetitive: detect column types, handle missing values,
+  remove duplicates, then chart everything. Non-programmers cannot do it at all.
+solution: >
+  A web app that takes a CSV, auto-detects column types, cleans the data, and generates
+  statistical summaries and visualizations, with no code required.
+verify: true
+---
+
+## Overview
+
+AutoEDA automatically cleans CSV datasets and generates exploratory analysis: type detection,
+missing-value handling, deduplication, and visualizations, all from an upload.
+
+## What I built
+
+- **Automatic column-type detection** (text, categorical, numeric) with a preview where the
+  user can override.
+- **Cleaning**: missing-value handling and duplicate removal.
+- **Visualizations**: histograms, a correlation heatmap, outlier boxplots, and bar charts.
+
+## Proof
+
+I fed it a 423-row sales CSV it had never seen, deliberately messy: missing ratings, two
+duplicate rows, and one extreme outlier. It correctly typed all eight columns, removed both
+duplicates (423 down to 421 rows), and generated the full chart set. The heatmap and other
+charts above are its real output.

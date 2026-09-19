@@ -1,0 +1,55 @@
+---
+title: Sabre WhatsApp Helpdesk Bot
+tagline: A production RAG assistant that answers Sabre-format questions over WhatsApp.
+type: client
+categories: [AI, RAG, Chatbot, Backend]
+stack: [Python, FastAPI, Groq, pgvector, PostgreSQL, sentence-transformers, Redis]
+year: "2026"
+role: Backend & AI Engineer
+status: internal
+featured: true
+order: 2
+screenshots:
+  - /images/whatsapp-rag-bot/api-swagger.png
+evidence:
+  swagger: /images/whatsapp-rag-bot/api-swagger.png
+  transcript: /images/whatsapp-rag-bot/rag-demo-transcript.txt
+  verified: "Stood up pgvector in a throwaway container, ingested the Sabre guide, and drove the real pipeline: four format questions returned four grounded answers, each citing the exact source section."
+problem: >
+  Travel agents constantly ask the same Sabre-format questions. Human support does
+  not scale, and generic chatbots invent commands, which is dangerous in a GDS.
+solution: >
+  A Retrieval-Augmented Generation bot over WhatsApp: it retrieves from official Sabre
+  documentation, answers with a grounded LLM response that cites its source, and hands
+  off to a human when confidence is low.
+verify: true
+---
+
+## Overview
+
+An AI helpdesk bot for Sabre travel agents, delivered over WhatsApp. It uses
+**Retrieval-Augmented Generation** so answers are grounded in official documentation
+rather than invented, which matters for a system where a wrong command has consequences.
+
+## Architecture
+
+WhatsApp message → webhook → intent classifier → FAQ cache → (on miss) hybrid retrieval
+(vector + keyword) with re-ranking → context builder → Groq LLM → confidence scoring →
+answer with source citation, or human handoff.
+
+## What I built
+
+- **Hybrid retrieval** over a pgvector store: vector similarity plus keyword search, then
+  re-ranking for the final context.
+- **Local embeddings** (sentence-transformers, all-MiniLM-L6-v2, 384-dim) so no embedding
+  cost per query.
+- **Intent classification and a FAQ cache** for instant answers to common questions.
+- **Confidence scoring** with a human-handoff fallback, plus circuit breakers and retry logic.
+- An **admin API** (documents, analytics, FAQ, config) documented via OpenAPI.
+
+## Proof
+
+I stood up a disposable pgvector database, ingested the Sabre format guide, and drove the
+real pipeline end to end. Four format questions ("how do I cancel a waitlisted segment?",
+"what does WPNCB do?", and so on) each returned a grounded, correctly formatted answer that
+**cited the exact section of the source document**. The full transcript is in the evidence.

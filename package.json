@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "velite && next dev --turbopack",
+    "build": "velite && next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "velite": "velite",
+    "content:report": "node scripts/content-report.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

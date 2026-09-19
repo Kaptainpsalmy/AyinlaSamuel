@@ -1,0 +1,25 @@
+---
+title: Idempotent alerting, or why your price monitor spams you
+excerpt: A naive price monitor fires a duplicate alert on every check. Here is the small design that fixes it.
+date: 2026-07-15
+tags: [backend, systems, design]
+verify: true
+---
+
+I built a microservice that watches a booked flight and alerts when the fare drops by 10
+percent or more. The naive version has an obvious bug: it checks the price on a schedule,
+and every check where the price is still down fires another alert. The user gets spammed.
+
+## The fix is state, not cleverness
+
+An alert is not "the price is low right now." It is "the price **crossed** the threshold."
+Once you have alerted for a given drop, you record that, and you do not alert again until the
+condition resets. The alert becomes **idempotent**: the same qualifying drop produces exactly
+one alert, no matter how many times you check.
+
+## Proving it
+
+I created a flight, forced an 18 percent drop, and the alert fired once at the 10 percent
+threshold. Then I forced the same drop again: the service returned `alert_triggered: false`
+and the alert count stayed at 1. That is the whole feature, and it is the difference between a
+tool people keep and a tool people mute.

@@ -1,0 +1,55 @@
+---
+title: AD3B Cryptosystem Comparison
+tagline: An empirical comparison of AES, DES, 3DES, and Blowfish against NIST test vectors.
+type: final-year
+categories: [Cryptography, Benchmarking, Research]
+stack: [Python, PySide6, pycryptodome, matplotlib]
+year: "2026"
+role: Solo Builder
+status: archived
+featured: false
+order: 7
+screenshots:
+  - /images/ad3b/ad3b-01-cipher-lab.png
+  - /images/ad3b/ad3b-02-benchmark-suite.png
+  - /images/ad3b/ad3b-03-security-analysis.png
+  - /images/ad3b/ad3b-04-comparison-report.png
+  - /images/ad3b/security_comparison.png
+  - /images/ad3b/throughput.png
+  - /images/ad3b/avalanche_effect.png
+  - /images/ad3b/architecture_diagram.png
+evidence:
+  benchmark:
+    - /images/ad3b/security_comparison.png
+    - /images/ad3b/throughput.png
+    - /images/ad3b/avalanche_effect.png
+  verified: "Ciphers verified against NIST and Schneier reference test vectors, not just round-trip self-consistency. 1600 of 1600 trials correct, all 16 build phases complete, frozen Chapter 4 results."
+problem: >
+  Comparing block ciphers fairly is hard: you need identical, controlled, repeated
+  conditions and verification against known-good test vectors, not just self-consistency.
+solution: >
+  A comparison lab that implements AES, DES, 3DES, and Blowfish independently, verifies
+  each against NIST and Schneier reference vectors, and measures them under identical
+  conditions across performance and security metrics.
+verify: true
+---
+
+## Overview
+
+AD3B is a comparison lab for four symmetric block ciphers: AES, DES, 3DES, and Blowfish.
+It measures them empirically across performance and security, and the results are the data
+source for the results chapter of the accompanying thesis.
+
+## What I built
+
+- Independent implementations of each cipher, **verified against NIST and Schneier reference
+  test vectors** rather than just round-trip self-consistency.
+- A **Cipher Lab**, a **Benchmark Suite**, a **Security Analysis** tab (avalanche effect, key
+  space), and a **Comparison Report**.
+- Controlled, repeated measurement so the comparison is fair and reproducible.
+
+## Proof
+
+All 16 build phases are complete, and the official results are frozen: **1600 of 1600 trials
+correct**. The benchmark charts (security comparison, throughput, avalanche effect) and the
+architecture diagram are shown above.

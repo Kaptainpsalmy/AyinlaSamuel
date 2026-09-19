@@ -1,0 +1,44 @@
+---
+title: Flight Price Monitor
+tagline: A microservice that fires an idempotent alert when a fare drops by 10 percent or more.
+type: client
+categories: [Backend, Microservice, Automation]
+stack: [Python, Flask, APScheduler, SQLite]
+year: "2026"
+role: Backend Engineer
+status: internal
+featured: false
+order: 10
+screenshots:
+  - /images/price-monitor/api-root.png
+  - /images/price-monitor/stats.png
+evidence:
+  transcript: /images/price-monitor/api-run.txt
+  verified: "Created a flight, forced an 18 percent drop, and the alert fired at 10 percent. On a repeat call it returned alert_triggered false with the count still at 1. Idempotency confirmed."
+problem: >
+  Monitoring a booked fare and alerting on a meaningful drop sounds simple, but naive
+  implementations fire duplicate alerts on every check. The alert must be idempotent.
+solution: >
+  A Flask microservice with scheduled price checks that triggers a single alert per
+  qualifying drop (10 percent or more), with a full REST API and price history.
+verify: true
+---
+
+## Overview
+
+A microservice that monitors booked flights and triggers a price-drop alert when a fare falls
+by 10 percent or more, built as a coding-challenge implementation for Sabre.
+
+## What I built
+
+- **Scheduled price checks** (APScheduler) with a mock polling mechanism.
+- **Idempotent alerts**: a qualifying drop fires exactly one alert, never duplicates.
+- A full **REST API** (19 endpoints) for flight management, price history, and stats.
+- 80 percent or higher test coverage.
+
+## Proof
+
+I created a flight (LOS to LHR at £890), forced an 18 percent drop, and the alert fired at
+10 percent (£801). Then I called force-drop again with the same target: it returned
+`alert_triggered: false` with the alert count still at 1. The idempotency claim in the README
+is real, and the run transcript is in the evidence.
