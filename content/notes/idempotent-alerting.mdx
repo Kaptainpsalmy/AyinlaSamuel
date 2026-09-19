@@ -23,3 +23,15 @@ I created a flight, forced an 18 percent drop, and the alert fired once at the 1
 threshold. Then I forced the same drop again: the service returned `alert_triggered: false`
 and the alert count stayed at 1. That is the whole feature, and it is the difference between a
 tool people keep and a tool people mute.
+
+## The check, in code
+
+```python
+def should_alert(flight, current_price):
+    drop = (flight.original_price - current_price) / flight.original_price
+    if drop < 0.10:
+        return False
+    if flight.last_alerted_price == current_price:
+        return False  # idempotent: already alerted for this price
+    return True
+```

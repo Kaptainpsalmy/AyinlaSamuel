@@ -1,4 +1,5 @@
 import { defineConfig, defineCollection, s } from "velite";
+import rehypePrettyCode from "rehype-pretty-code";
 
 // Projects: each MDX is a case study. Schema mirrors plans/phase3.md.
 const projects = defineCollection({
@@ -53,8 +54,8 @@ const notes = defineCollection({
       excerpt: s.string(),
       date: s.isodate(),
       tags: s.array(s.string()).default([]),
-      readingTime: s.number().optional(),
       verify: s.boolean().default(false),
+      metadata: s.metadata(),
       body: s.mdx(),
     })
     .transform((data) => { const slug = data.slug.replace(/^notes\//, ""); return { ...data, slug, url: `/notes/${slug}` }; }),
@@ -69,5 +70,16 @@ export default defineConfig({
     clean: true,
   },
   collections: { projects, notes },
-  mdx: { gfm: true },
+  mdx: {
+    gfm: true,
+    rehypePlugins: [
+      [
+        rehypePrettyCode,
+        {
+          theme: { dark: "github-dark", light: "github-light" },
+          keepBackground: false,
+        },
+      ],
+    ],
+  },
 });

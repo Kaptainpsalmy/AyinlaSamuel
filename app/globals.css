@@ -89,3 +89,10 @@ h1, h2, h3 { text-wrap: pretty; letter-spacing: -0.03em; }
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Print: clean CV, no site chrome */
+@media print {
+  header, footer, [aria-label="Back to top"] { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .cv, .cv * { color: #000 !important; }
+}
