@@ -13,6 +13,7 @@ import { site, nav } from "@/content/site";
 import { useTheme } from "./ThemeProvider";
 import { useRecentCommands } from "@/lib/useRecentCommands";
 import { setLocale } from "@/i18n/actions";
+import { toast } from "@/components/common/Toast";
 
 const navIcons: Record<string, LucideIcon> = {
   "/projects": Folder, "/notes": FileText, "/experience": Briefcase,
@@ -65,8 +66,11 @@ export function CommandMenu() {
     try {
       await navigator.clipboard.writeText(site.email);
       setCopied(true);
+      toast("Email copied to clipboard");
       setTimeout(() => setCopied(false), 1500);
-    } catch {}
+    } catch {
+      toast("Could not copy. Email: " + site.email);
+    }
   }, []);
 
   // Single source of truth for all commands (data driven so recents can reference by id).
@@ -91,7 +95,7 @@ export function CommandMenu() {
         run: () => go("/api/py/now", true) },
       { id: "ask-ai", group: "actions", label: t("askAi"),
         keywords: ["ai", "chat", "assistant"], icon: <Sparkles size={16} />,
-        run: () => { setOpen(false); document.dispatchEvent(new CustomEvent("open-ai")); } },
+        run: () => { setOpen(false); const heard = document.dispatchEvent(new CustomEvent("open-ai", { cancelable: true })); if (heard) toast("AI assistant is coming soon."); } },
       { id: "match-jd", group: "actions", label: t("matchJd"),
         keywords: ["job", "jd", "match", "hire"], icon: <Target size={16} />, run: () => go("/contact") },
       { id: "toggle-theme", group: "actions", label: t("toggleTheme"),

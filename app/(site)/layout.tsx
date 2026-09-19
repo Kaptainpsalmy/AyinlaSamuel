@@ -2,6 +2,7 @@ import { Nav } from "@/components/layout/Nav";
 import { Footer } from "@/components/layout/Footer";
 import { CommandMenu } from "@/components/layout/CommandMenu";
 import { BackToTop } from "@/components/layout/BackToTop";
+import { ToastHost } from "@/components/common/Toast";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
@@ -19,6 +20,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       <Footer />
       <CommandMenu />
       <BackToTop />
+      <ToastHost />
     </>
   );
 }
