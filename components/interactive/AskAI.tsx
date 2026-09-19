@@ -55,9 +55,11 @@ export function AskAI() {
             const obj = JSON.parse(body);
             setMsgs((m) => {
               const copy = [...m];
-              const last = copy[copy.length - 1];
-              if (obj.text) last.text += obj.text;
+              const i = copy.length - 1;
+              const last = { ...copy[i] };
+              if (obj.text) last.text = last.text + obj.text;
               if (obj.sources) last.sources = obj.sources;
+              copy[i] = last;
               return copy;
             });
           } catch {}
