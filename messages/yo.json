@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "projects": "Awon Ise", "notes": "Akosile", "experience": "Iriri",
+    "about": "Nipa Mi", "sandbox": "Idanwo", "cv": "CV", "contact": "Kan si Mi"
+  },
+  "common": {
+    "menu": "Akojopo", "close": "Ti", "backToTop": "Pada si oke",
+    "searchCommands": "Wa ati awon ase", "toggleTheme": "Yi awo pada",
+    "language": "Ede", "availableForWork": "Mo wa fun ise",
+    "underConstruction": "A n ko"
+  },
+  "command": {
+    "placeholder": "Te ase tabi wa...",
+    "groupNavigate": "Lo si", "groupActions": "Awon Ise", "groupSocial": "Awujo",
+    "copyEmail": "Da adiresi imeeli", "downloadCv": "Gba CV",
+    "viewNow": "Wo ohun ti mo n se", "askAi": "Beere lowo AI",
+    "matchJd": "Fi we apejuwe ise",
+    "openGithub": "Si GitHub", "openLinkedin": "Si LinkedIn", "openTwitter": "Si Twitter",
+    "toggleTheme": "Yi awo pada", "switchLanguage": "Yi ede pada",
+    "copied": "Ti da a"
+  }
+}
