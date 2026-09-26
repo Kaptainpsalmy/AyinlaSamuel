@@ -1,29 +1,48 @@
 {
+  "meta": {
+    "siteDescription": "Ayinla Samuel Olorunwa. Full-stack software engineer focused on backend and AI: FastAPI, RAG, and agentic systems."
+  },
+  "profile": {
+    "role": "Full-Stack Software Engineer, Backend & AI focus",
+    "tagline": "I build intelligent and automated solutions using Python, AI, and modern backend technologies."
+  },
   "nav": {
     "projects": "Projects",
     "notes": "Notes",
     "experience": "Experience",
     "about": "About",
-    "sandbox": "Sandbox",
     "cv": "CV",
-    "contact": "Contact"
+    "contact": "Contact",
+    "play": "Play",
+    "lab": "Lab"
   },
   "common": {
-    "menu": "Menu",
+    "skipToContent": "Skip to content",
+    "primaryNav": "Primary",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
     "close": "Close",
-    "backToTop": "Back to top",
+    "search": "Search",
     "searchCommands": "Search and commands",
-    "toggleTheme": "Toggle theme",
+    "backToTop": "Back to top",
     "language": "Language",
-    "availableForWork": "Available for work",
-    "underConstruction": "Under construction"
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme",
+    "aiComingSoon": "The AI assistant is coming soon.",
+    "noPreview": "No preview"
   },
   "command": {
     "placeholder": "Type a command or search...",
+    "noResults": "No results.",
     "groupNavigate": "Navigate",
     "groupActions": "Actions",
     "groupSocial": "Social",
+    "groupRecent": "Recent",
+    "groupDeveloper": "Developer",
     "copyEmail": "Copy email address",
+    "copied": "Copied",
+    "emailCopied": "Email copied to clipboard",
+    "copyFailed": "Could not copy. Email: {email}",
     "downloadCv": "Download CV",
     "viewNow": "View live activity",
     "askAi": "Ask the AI assistant",
@@ -33,7 +52,386 @@
     "openTwitter": "Open Twitter",
     "toggleTheme": "Toggle theme",
     "switchLanguage": "Switch language",
-    "copied": "Copied",
-    "groupRecent": "Recent"
+    "viewArchitecture": "View architecture",
+    "openApiDocs": "Open API docs",
+    "currentStack": "See current stack",
+    "availability": "View availability",
+    "runDemo": "Run a live demo"
+  },
+  "footer": {
+    "blurb": "{role}. Based in {location}.",
+    "navLabel": "Footer",
+    "rights": "All rights reserved."
+  },
+  "sidebar": {
+    "years": "{count, plural, one {#+ year of experience} other {#+ years of experience}}",
+    "companies": "{count, plural, one {# company} other {# companies}}",
+    "projects": "{count, plural, one {# project shipped} other {# projects shipped}}",
+    "available": "Available for work",
+    "engaged": "Currently engaged",
+    "downloadCv": "Download CV",
+    "email": "Email"
+  },
+  "signals": {
+    "title": "Live signals",
+    "checking": "Checking",
+    "online": "Online",
+    "offline": "Offline",
+    "assistant": "AI assistant",
+    "ready": "Ready",
+    "latestCommit": "Latest commit",
+    "lagos": "Lagos",
+    "recent": "recent",
+    "justNow": "just now",
+    "minutes": "{n}m ago",
+    "hours": "{n}h ago",
+    "days": "{n}d ago"
+  },
+  "mobileNav": {
+    "label": "Mobile primary",
+    "home": "Home",
+    "work": "Work",
+    "ai": "AI",
+    "notes": "Notes",
+    "contact": "Contact"
+  },
+  "hero": {
+    "showPulse": "Show API pulse",
+    "showTerminal": "Show terminal",
+    "systemOperational": "System operational"
+  },
+  "home": {
+    "available": "Available for work, {location}",
+    "heroLead": "{role}. I build the API, the model, and the pipeline in between.",
+    "viewWork": "View work",
+    "getInTouch": "Get in touch",
+    "featuredWork": "Featured work",
+    "allProjects": "All projects",
+    "about": "About",
+    "moreAboutMe": "More about me",
+    "experience": "Experience",
+    "fullHistory": "Full history",
+    "at": "at {company}",
+    "services": "Services",
+    "allServices": "All services",
+    "recentNotes": "Recent notes",
+    "allNotes": "All notes",
+    "ctaTitle": "Let us build something",
+    "ctaBody": "Available for full-time roles, freelance work, and collaborations."
+  },
+  "reel": {
+    "carousel": "carousel",
+    "label": "Featured projects",
+    "slide": "slide",
+    "slideLabel": "{n} of {total}: {title}",
+    "featured": "Featured",
+    "previous": "Previous project",
+    "next": "Next project",
+    "goTo": "Go to project {n}"
+  },
+  "now": {
+    "building": "building {what}"
+  },
+  "contrib": {
+    "title": "Contributions",
+    "total": "{count, plural, one {# contribution in the last year} other {# contributions in the last year}}",
+    "sample": "sample",
+    "cell": "{count, plural, one {# contribution} other {# contributions}}",
+    "less": "Less",
+    "more": "More"
+  },
+  "about": {
+    "title": "About",
+    "lead": "{role}, based in {location}.",
+    "education": "Education",
+    "certifications": "Certifications",
+    "verify": "Verify"
+  },
+  "experience": {
+    "title": "Experience",
+    "description": "Roles and companies across backend, AI, and full-stack engineering, with what I owned and shipped at each one.",
+    "lead": "Where I have worked and what I built.",
+    "ongoing": "Ongoing",
+    "type": {
+      "internship": "Internship",
+      "fullTime": "Full-time",
+      "contract": "Contract",
+      "freelance": "Freelance",
+      "founder": "Founder"
+    }
+  },
+  "skills": {
+    "title": "Skills",
+    "description": "Backend, AI and ML, frontend, data, and infrastructure.",
+    "lead": "The tools I build with, grouped by domain.",
+    "group": {
+      "backend": "Backend",
+      "aiMl": "AI & ML",
+      "frontend": "Frontend",
+      "dataInfra": "Data & Infra"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "description": "Backend APIs, AI and RAG systems, automation, and full-stack builds: what I can design, build, and ship for your team.",
+    "lead": "Backend and AI engineering, from APIs to agentic systems."
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Backend and AI systems I have designed, built, and shipped.",
+    "lead": "Everything I have designed, built, and shipped. Backend systems, AI, and the infrastructure in between.",
+    "count": "{count, plural, one {# project} other {# projects}}",
+    "empty": "No projects match these filters."
+  },
+  "filters": {
+    "byDomain": "Filter by domain",
+    "byType": "Filter by type",
+    "byStack": "Filter by technology",
+    "domain": {
+      "all": "All work",
+      "systems": "Systems",
+      "intelligence": "Intelligence",
+      "commerce": "Commerce",
+      "product": "Product"
+    },
+    "domainHint": {
+      "systems": "APIs, architecture, infrastructure",
+      "intelligence": "RAG, agents, LLMs, ML",
+      "commerce": "Payments, security",
+      "product": "Full-stack apps"
+    },
+    "searchPlaceholder": "Search projects...",
+    "searchLabel": "Search projects",
+    "sortLabel": "Sort projects",
+    "sortFeatured": "Featured first",
+    "sortNewest": "Newest first",
+    "sortAz": "A to Z",
+    "clear": "Clear"
+  },
+  "projectType": {
+    "all": "All",
+    "client": "Client",
+    "side": "Side",
+    "finalYear": "Final year",
+    "personal": "Personal"
+  },
+  "projectStatus": {
+    "live": "Live",
+    "internal": "Shipped",
+    "archived": "Case study"
+  },
+  "project": {
+    "back": "Back to projects",
+    "liveSite": "Live site",
+    "code": "Code",
+    "docs": "Docs",
+    "techStack": "Tech stack"
+  },
+  "gallery": {
+    "enlarge": "Enlarge screenshot {n}",
+    "alt": "{title} screenshot {n}"
+  },
+  "evidence": {
+    "title": "Proof it works",
+    "liveSite": "Live site",
+    "apiDocs": "API docs",
+    "transcript": "Run transcript",
+    "benchmarkAlt": "Benchmark chart"
+  },
+  "diagram": {
+    "rag": "Retrieval pipeline: documents to a sourced answer",
+    "ragChatbot": "Retrieval pipeline behind the chatbot",
+    "agent": "Agent loop: plan, call tools, observe, repeat",
+    "payment": "Payment lifecycle with webhook verification"
+  },
+  "prevNext": {
+    "label": "Project navigation",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "share": {
+    "label": "Share",
+    "copied": "Link copied to clipboard",
+    "failed": "Could not share"
+  },
+  "views": {
+    "count": "{count, plural, one {# view} other {# views}}"
+  },
+  "notes": {
+    "title": "Notes",
+    "description": "Engineering notes and case-study writing on backend systems, RAG pipelines, and shipping AI to production.",
+    "lead": "Engineering reflections, grounded in real projects.",
+    "minutes": "{count} min",
+    "filterLabel": "Filter notes by tag",
+    "allTags": "All"
+  },
+  "note": {
+    "back": "Back to notes",
+    "readTime": "{count} min read",
+    "navLabel": "Note navigation",
+    "tocLabel": "Table of contents",
+    "onThisPage": "On this page",
+    "copyCode": "Copy code",
+    "copied": "Copied"
+  },
+  "cv": {
+    "title": "Curriculum Vitae",
+    "description": "Curriculum vitae for Ayinla Samuel Olorunwa, full-stack software engineer focused on backend and AI: experience, projects, and skills.",
+    "englishNote": "The CV is in English, to match the downloadable PDF.",
+    "downloadPdf": "Download PDF",
+    "print": "Print",
+    "pdfFallback": "Could not generate the PDF, so the print dialog is opening instead."
+  },
+  "licenses": {
+    "title": "Licenses",
+    "description": "Credits and attribution for the fonts, illustrations, icons, and open-source libraries this site is built with.",
+    "lead": "This site is built with open-source software. Credit where it is due.",
+    "footer": "Screenshots and project content are the work of Ayinla Samuel Olorunwa, except where a project is credited to a client or employer.",
+    "role": {
+      "framework": "React framework",
+      "ui": "UI library",
+      "styling": "Styling",
+      "animation": "Animation",
+      "i18n": "Translations",
+      "palette": "Command palette",
+      "icons": "Icons",
+      "content": "Content pipeline",
+      "highlighting": "Code highlighting",
+      "displayFont": "Display and body typeface",
+      "monoFont": "Monospace typeface",
+      "backend": "Python backend",
+      "illustrations": "Illustrations"
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact",
+    "description": "Get in touch about backend, AI, or full-stack roles, freelance projects, or collaboration.",
+    "title": "Let us connect",
+    "lead": "Available for full-time roles, freelance work, and collaborations. Send a message or reach me directly.",
+    "email": "Email",
+    "phone": "Phone"
+  },
+  "contactForm": {
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "subject": "Subject",
+    "subjectPlaceholder": "What is this about?",
+    "message": "Message",
+    "messagePlaceholder": "Tell me about your project or role.",
+    "send": "Send message",
+    "sending": "Sending...",
+    "sent": "Sent",
+    "sentToast": "Message sent. I will get back to you.",
+    "rateLimited": "Too many messages for now. Please try again later or email me directly.",
+    "openingEmail": "Opening your email app...",
+    "errName": "Your name is required.",
+    "errEmailRequired": "Your email is required.",
+    "errEmailInvalid": "That email does not look right.",
+    "errMessage": "Please write at least 10 characters.",
+    "defaultSubject": "Portfolio contact",
+    "from": "From"
+  },
+  "play": {
+    "metaTitle": "Play",
+    "description": "Take a break and rebuild the picture. A lighter corner of the site.",
+    "kicker": "Take a break",
+    "title": "Rebuild the picture",
+    "lead": "Drag the tiles to swap them and put the picture back together. Time yourself if you like. Solve it to learn something about me."
+  },
+  "game": {
+    "title": "Take a break",
+    "biggerLabel": "Play on a bigger screen",
+    "quickPuzzle": "Play a quick puzzle",
+    "shuffle": "Shuffle",
+    "reveal": "Reveal",
+    "hide": "Hide",
+    "bigger": "Bigger",
+    "timeYourself": "Time yourself",
+    "noTimer": "No timer",
+    "minutes": "{n} min",
+    "start": "Start",
+    "howTo": "Drag a tile onto another to swap them (or tap one, then tap another). Rebuild the picture.",
+    "left": "{time} left",
+    "best": "best {time}",
+    "revealPicture": "Reveal full picture",
+    "hidePicture": "Hide picture",
+    "reshuffle": "Reshuffle",
+    "newPicture": "New picture",
+    "tile": "Tile {n}",
+    "tilePicked": "Tile {n}, picked up",
+    "boardLabel": "Picture puzzle: {label}",
+    "targetAlt": "Target: {label}",
+    "target": "target",
+    "timeUp": "Time is up! So close.",
+    "solved": "Solved!",
+    "solvedIn": "Solved in {time}",
+    "didYouKnow": "Did you know?",
+    "playMore": "Play more to know more",
+    "image": {
+      "engineer": "PsalmNova, engineered",
+      "portrait": "PsalmNova",
+      "office": "At work",
+      "portrait2": "PsalmNova, again",
+      "ai": "AI",
+      "code": "Late-night code",
+      "money": "Show me the money"
+    }
+  },
+  "lab": {
+    "metaTitle": "Lab",
+    "description": "Inspect how it works: call the live API behind this site, and step through the architectures of real systems.",
+    "title": "Inspect how it works",
+    "lead": "Most portfolios say \"I build things.\" This one lets you check. Call the live API behind this site, and walk through the architectures of the real systems I have shipped.",
+    "apiTitle": "API playground",
+    "apiLead": "These hit my real FastAPI backend, live. Pick one and see the actual response, status, and latency.",
+    "archTitle": "Architecture explorer",
+    "archLead": "Step through how a RAG pipeline, a payment lifecycle, and an agent loop actually work, each linked to the project it came from."
+  },
+  "api": {
+    "endpoint": {
+      "health": "Health check",
+      "now": "Live activity",
+      "contributions": "GitHub contributions",
+      "views": "Project view count",
+      "chat": "Ask the AI (streamed)"
+    },
+    "openDocs": "Open full API docs",
+    "response": "response",
+    "pick": "Pick an endpoint on the left to call the live backend.",
+    "failed": "Request failed (backend offline?).",
+    "noContent": "(no content)",
+    "binary": "({type} response, {size} bytes)"
+  },
+  "arch": {
+    "pickSystem": "Pick a system",
+    "stages": "Stages",
+    "system": {
+      "rag": "RAG pipeline",
+      "payment": "Payment lifecycle",
+      "agent": "Agent workflow"
+    },
+    "seeItIn": "See it in {name}",
+    "nextStage": "Next stage"
+  },
+  "ai": {
+    "open": "Ask the AI assistant",
+    "dialogLabel": "AI assistant",
+    "title": "Ask about my work",
+    "intro": "Ask me anything about Samuel's projects, experience, or skills. Answers are grounded in his real work.",
+    "placeholder": "Ask about my work...",
+    "send": "Send",
+    "sources": "Sources",
+    "grounded": "Grounded via my live API",
+    "error": "Sorry, something went wrong.",
+    "thinking": "Thinking",
+    "about": "About",
+    "experience": "Experience"
+  },
+  "notFound": {
+    "imageLabel": "Page not found",
+    "title": "This page took a wrong turn",
+    "lead": "The page you are looking for does not exist or has moved.",
+    "home": "Back home"
   }
 }

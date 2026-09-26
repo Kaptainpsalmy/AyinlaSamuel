@@ -22,6 +22,22 @@ The fix is to test against **NIST and Schneier reference test vectors**: known i
 known correct outputs. That is the difference between "my code agrees with itself" and "my
 code agrees with the specification."
 
+```python
+def verify_against_vectors(cipher: BlockCipher, vectors: list[Vector]) -> Result:
+    passed = 0
+    for v in vectors:
+        ct = cipher.encrypt(v.plaintext, v.key)
+        # correctness = matches the STANDARD's expected ciphertext,
+        # not merely that decrypt(encrypt(x)) == x
+        if ct == v.expected_ciphertext and cipher.decrypt(ct, v.key) == v.plaintext:
+            passed += 1
+    return Result(cipher=cipher.name, passed=passed, total=len(vectors))
+
+# Only ciphers that pass every reference vector are allowed into the benchmark.
+results = [verify_against_vectors(c, load_nist_vectors(c.name)) for c in CIPHERS]
+assert all(r.passed == r.total for r in results), "a cipher failed a known-answer test"
+```
+
 ## The numbers
 
 Across controlled, repeated conditions, the suite ran 1,600 trials and got 1,600 correct,

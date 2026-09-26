@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────
-   PsalmNova — Kinetic Minimal design tokens (both themes).
+   PsalmNova: Kinetic Minimal design tokens (both themes).
    Dark is a DESIGNED PAIR, not an inversion:
    accent shifts brighter, feature card becomes indigo, cards gain a border.
    Theme is driven by data-theme on <html> (set pre-paint by ThemeScript).
@@ -21,23 +21,57 @@
   --line-strong:   rgba(13,13,13,0.18);
   --ok:            #12b76a;
   --warn:          #b25f00;
+  /* text versions of ok/warn: the fills above are too light for small text
+     on a pale surface (2.4:1). These pass WCAG AA (4.5:1) on canvas and card. */
+  --ok-ink:        #067647;
+  --warn-ink:      #a15500;
   color-scheme: light;
 }
 
-:root[data-theme="dark"] {
+:root[data-theme="dark"],
+/* .theme-dark: a surface that is dark in both themes (the hero terminal) uses
+   the dark palette so its text keeps the contrast it was designed with. */
+.theme-dark {
   --canvas:        #0e0e10;
   --ink:           #f2f2f0;
   --muted:         #9a9a9c;
-  --accent:        #5b5bff;   /* brighter — pure #2b2bff vibrates on near-black */
+  --accent:        #5b5bff;   /* brighter: pure #2b2bff vibrates on near-black */
   --accent-2:      #6f6fff;
   --card:          #1c1c1f;
-  --feature:       #1b1b6e;   /* indigo — a black card would vanish here */
+  --feature:       #1b1b6e;   /* indigo: a black card would vanish here */
   --feature-ink:   #ffffff;
   --line:          rgba(255,255,255,0.10);
   --line-strong:   rgba(255,255,255,0.18);
   --ok:            #3ddc84;
   --warn:          #ffb020;
+  --ok-ink:        #3ddc84;
+  --warn-ink:      #ffb020;
   color-scheme: dark;
+}
+
+/* OS-preference fallback: if the visitor never picked a theme (no data-theme,
+   or the pre-paint script has not run), follow the system setting. An explicit
+   data-theme="light" always wins because of the :not() guard, so a chosen
+   light theme is never overridden on a dark-mode OS. Values mirror the
+   data-theme="dark" block above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --canvas:        #0e0e10;
+    --ink:           #f2f2f0;
+    --muted:         #9a9a9c;
+    --accent:        #5b5bff;
+    --accent-2:      #6f6fff;
+    --card:          #1c1c1f;
+    --feature:       #1b1b6e;
+    --feature-ink:   #ffffff;
+    --line:          rgba(255,255,255,0.10);
+    --line-strong:   rgba(255,255,255,0.18);
+    --ok:            #3ddc84;
+    --warn:          #ffb020;
+    --ok-ink:        #3ddc84;
+    --warn-ink:      #ffb020;
+    color-scheme: dark;
+  }
 }
 
 /* Map tokens into Tailwind v4's theme so utilities like bg-canvas / text-ink exist */
@@ -53,6 +87,8 @@
   --color-line:        var(--line);
   --color-ok:          var(--ok);
   --color-warn:        var(--warn);
+  --color-ok-ink:      var(--ok-ink);
+  --color-warn-ink:    var(--warn-ink);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -62,6 +98,39 @@
 }
 
 html { height: 100%; }
+
+/* In-page jumps (contents list, skip link) glide instead of teleporting. Route
+   changes still jump straight to the top: <html data-scroll-behavior="smooth">
+   tells Next to switch this off while it navigates. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Reading progress on notes: a scroll-driven animation, so it costs no
+   JavaScript. Browsers without scroll timelines simply do not show it. */
+.reading-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  .reading-progress {
+    display: block;
+    background: var(--accent);
+    transform-origin: 0 50%;
+    animation: reading-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes reading-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* Height of the sticky top bar. It has a second row of links between md and
+   xl (see components/layout/Nav.tsx), so sticky elements and anchor jumps read
+   this instead of hardcoding 4rem. */
+:root { --header-h: 4rem; }
+@media (min-width: 48rem) and (max-width: 79.999rem) {
+  :root { --header-h: 6.9rem; }
+}
+
 body {
   min-height: 100%;
   background: var(--canvas);
@@ -73,6 +142,89 @@ body {
 
 h1, h2, h3 { text-wrap: pretty; letter-spacing: -0.03em; }
 
+/* Gentle floating motion for hero illustration/art. The global reduced-motion
+   block below disables it (animation-iteration-count:1), so no extra guard. */
+@keyframes float-y {
+  from { transform: translateY(-6px); }
+  to   { transform: translateY(6px); }
+}
+.animate-float {
+  animation: float-y 6s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Vertical signal marquee (sidebar edge). Two identical halves; -50% lands on a
+   seam for a gapless loop. Disabled by the reduced-motion block below. */
+@keyframes marquee-y {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+.animate-marquee-y {
+  animation: marquee-y 50s linear infinite;
+  will-change: transform;
+}
+
+/* One-shot entrance for overlays (e.g. the puzzle's win card). */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Plain crossfade for swapping content in place (e.g. carousel slides). */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+/* ── Page transitions ─────────────────────────────────────────────
+   Driven by React's <ViewTransition> (components/motion/PageTransition).
+   Old page leaves fast so it does not compete; new page arrives gently
+   after it. Timings mirror lib/motion-config.ts.                      */
+
+/* Clicks during a transition reach the live page instead of the overlay. */
+::view-transition {
+  pointer-events: none;
+}
+
+/* The persistent chrome (sidebar, nav, footer) is in the root snapshot:
+   keep it perfectly still so only the page content moves. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(.page-out) {
+  animation: 150ms ease-in both vt-fade-out;
+}
+::view-transition-new(.page-in) {
+  animation: 350ms cubic-bezier(0.22, 1, 0.36, 1) 90ms both vt-rise;
+}
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+@keyframes vt-rise {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* Shared-element morph (project cover card -> case-study gallery). The brief
+   blur hides interpolation artifacts mid-flight. */
+::view-transition-group(.morph) {
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-image-pair(.morph) {
+  animation-name: vt-via-blur;
+}
+@keyframes vt-via-blur {
+  30% { filter: blur(3px); }
+}
+
 /* Respect reduced motion globally */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -80,6 +232,15 @@ h1, h2, h3 { text-wrap: pretty; letter-spacing: -0.03em; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+  /* View-transition pseudo-elements are not matched by `*`, so cover them
+     explicitly: pages swap instantly. */
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
 

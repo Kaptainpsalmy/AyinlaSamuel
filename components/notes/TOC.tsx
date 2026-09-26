@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Head = { id: string; text: string; level: number };
 
 /** Builds a table of contents from the rendered h2/h3 in the article. */
 export function TOC() {
+  const t = useTranslations("note");
   const [heads, setHeads] = useState<Head[]>([]);
   const [active, setActive] = useState<string>("");
 
@@ -25,8 +27,8 @@ export function TOC() {
 
   if (heads.length < 2) return null;
   return (
-    <nav aria-label="Table of contents" className="hidden text-sm lg:block">
-      <p className="mb-3 font-mono text-xs uppercase tracking-widest text-muted">On this page</p>
+    <nav aria-label={t("tocLabel")} className="hidden text-sm lg:block">
+      <p className="mb-3 font-mono text-xs uppercase tracking-widest text-muted">{t("onThisPage")}</p>
       <ul className="space-y-2 border-l border-line">
         {heads.map((h) => (
           <li key={h.id} style={{ paddingLeft: h.level === 3 ? 24 : 12 }}>

@@ -1,16 +1,22 @@
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { pageMeta } from "@/lib/seo";
 import { projects } from "@/.velite";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectFilters } from "@/components/projects/ProjectFilters";
+import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 
-export const metadata = {
-  title: "Projects",
-  description: "Backend and AI systems I have designed, built, and shipped.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("projects");
+  return pageMeta({ title: t("title"), description: t("description"), path: "/projects" });
+}
 
 type SP = { [key: string]: string | string[] | undefined };
 
 export default async function ProjectsPage({ searchParams }: { searchParams: Promise<SP> }) {
+  const t = await getTranslations("projects");
   const sp = await searchParams;
+  const domain = typeof sp.domain === "string" ? sp.domain : "";
   const type = typeof sp.type === "string" ? sp.type : "";
   const stack = typeof sp.stack === "string" ? sp.stack : "";
   const q = (typeof sp.q === "string" ? sp.q : "").toLowerCase().trim();
@@ -20,6 +26,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
   const allStacks = Array.from(new Set(projects.flatMap((p) => p.stack))).sort();
 
   let list = projects.filter((p) => {
+    if (domain && p.domain !== domain) return false;
     if (type && p.type !== type) return false;
     if (stack && !p.stack.includes(stack)) return false;
     if (q) {
@@ -40,27 +47,28 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <header className="mb-10">
-        <h1 className="text-5xl font-bold tracking-tight">Projects</h1>
-        <p className="mt-3 max-w-xl text-muted">
-          Everything I have designed, built, and shipped. Backend systems, AI, and the
-          infrastructure in between.
-        </p>
+        <h1 className="text-5xl font-bold tracking-tight">{t("title")}</h1>
+        <p className="mt-3 max-w-xl text-muted">{t("lead")}</p>
       </header>
 
       <ProjectFilters stacks={allStacks} />
 
-      <p className="mt-6 font-mono text-xs text-muted">
-        {list.length} {list.length === 1 ? "project" : "projects"}
+      <p className="mt-6 font-mono text-xs text-muted" aria-live="polite">
+        {t("count", { count: list.length })}
       </p>
 
       {list.length === 0 ? (
-        <p className="mt-16 text-center text-muted">No projects match these filters.</p>
+        <p className="mt-16 text-center text-muted">{t("empty")}</p>
       ) : (
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        // Not keyed on the filters: remounting per keystroke would replay the
+        // stagger while typing. Newly matched cards fade in on their own.
+        <Stagger className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((p) => (
-            <ProjectCard key={p.slug} project={p} />
+            <StaggerItem key={p.slug} className="h-full">
+              <ProjectCard project={p} />
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
     </section>
   );

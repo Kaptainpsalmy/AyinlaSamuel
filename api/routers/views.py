@@ -8,7 +8,10 @@ from api.models.tables import ProjectView
 router = APIRouter(tags=["views"])
 
 
-@router.get("/api/py/projects/{slug}/views", summary="Get view count")
+_views_example = {200: {"content": {"application/json": {"example": {"slug": "sicklesense", "views": 128}}}}}
+
+
+@router.get("/api/py/projects/{slug}/views", summary="Get view count", responses=_views_example)
 async def get_views(slug: str) -> dict:
     maker = session_maker()
     if maker is None:
@@ -21,7 +24,7 @@ async def get_views(slug: str) -> dict:
         return {"slug": slug, "views": 0}
 
 
-@router.post("/api/py/projects/{slug}/views", summary="Increment view count")
+@router.post("/api/py/projects/{slug}/views", summary="Increment view count", responses=_views_example)
 async def add_view(slug: str) -> dict:
     maker = session_maker()
     if maker is None:

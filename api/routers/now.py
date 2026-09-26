@@ -38,7 +38,32 @@ async def _latest_commit() -> dict | None:
     return None
 
 
-@router.get("/api/py/now", summary="Live activity")
+@router.get(
+    "/api/py/now",
+    summary="Live activity",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": {
+                        "activity": {
+                            "latestCommit": {
+                                "repo": "kaptainpsalmy/psalmnova",
+                                "repoShort": "psalmnova",
+                                "message": "feat: wire the live signals rail",
+                                "pushedAt": "2026-09-20T07:15:00Z",
+                                "url": "https://github.com/kaptainpsalmy/psalmnova",
+                            }
+                        },
+                        "role": "Software Engineer at BEMA Integrated Services",
+                        "lagosTime": "2026-09-20T08:40:30+01:00",
+                        "building": "psalmnova.vercel.app",
+                    }
+                }
+            }
+        }
+    },
+)
 async def now() -> dict:
     """Current role, Lagos local time, and latest public commit (best effort)."""
     commit = await _latest_commit()

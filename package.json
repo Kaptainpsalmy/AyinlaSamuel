@@ -4,13 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "velite && next dev --turbopack",
-    "build": "velite && node scripts/build_rag_index.mjs && next build --turbopack",
+    "build": "velite && node scripts/check-i18n.mjs && node scripts/build_rag_index.mjs && next build --turbopack",
     "start": "next start",
     "lint": "eslint",
     "velite": "velite",
-    "content:report": "node scripts/content-report.mjs"
+    "content:report": "node scripts/content-report.mjs",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {
+    "@sentry/browser": "^11.0.0",
+    "@sentry/nextjs": "^11.0.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -20,6 +26,7 @@
     "next-intl": "^4.14.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {

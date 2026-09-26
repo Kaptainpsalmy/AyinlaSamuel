@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { GithubIcon as Github, LinkedinIcon as Linkedin, TwitterIcon as Twitter } from "@/components/common/BrandIcons";
 import { site, nav } from "@/content/site";
 
-export function Footer() {
+export async function Footer() {
+  const t = await getTranslations("footer");
+  const tn = await getTranslations("nav");
+  const tp = await getTranslations("profile");
   const year = new Date().getFullYear();
   return (
     <footer className="mt-auto border-t border-line">
@@ -12,13 +16,13 @@ export function Footer() {
             {site.brand}<span className="text-accent-2">.</span>
           </p>
           <p className="mt-3 text-sm text-muted">
-            {site.role}. Based in {site.location}.
+            {t("blurb", { role: tp("role"), location: site.location })}
           </p>
         </div>
-        <nav aria-label="Footer" className="flex flex-wrap gap-x-8 gap-y-2">
+        <nav aria-label={t("navLabel")} className="flex flex-wrap gap-x-8 gap-y-2">
           {nav.map((n) => (
             <Link key={n.href} href={n.href} className="text-sm text-muted transition-colors hover:text-ink">
-              {n.label}
+              {tn(n.href.slice(1) as Parameters<typeof tn>[0])}
             </Link>
           ))}
         </nav>
@@ -30,7 +34,7 @@ export function Footer() {
       </div>
       <div className="border-t border-line">
         <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-muted sm:px-6">
-          &copy; {year} {site.brand}. All rights reserved.
+          &copy; {year} {site.brand}. {t("rights")}
         </p>
       </div>
     </footer>

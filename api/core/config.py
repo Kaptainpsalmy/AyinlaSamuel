@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     resend_api_key: str | None = None
     github_token: str | None = None
     groq_api_key: str | None = None
+    sentry_dsn: str | None = None  # error reporting; off when unset
+    vercel_env: str = "development"  # set by Vercel: production / preview
 
     version: str = "0.1.0"
 

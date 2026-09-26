@@ -1,39 +1,437 @@
 {
+  "meta": {
+    "siteDescription": "Ayinla Samuel Olorunwa. Onímọ̀-ẹ̀rọ sọ́fútúwià full-stack tí ó dojú kọ backend àti AI: FastAPI, RAG, àti àwọn ètò aṣojú."
+  },
+  "profile": {
+    "role": "Onímọ̀-ẹ̀rọ Sọ́fútúwià Full-Stack, pẹ̀lú àfojúsùn lórí Backend àti AI",
+    "tagline": "Mo ń kọ́ àwọn ojútùú olóye àti aládàáṣiṣẹ́ pẹ̀lú Python, AI, àti ìmọ̀-ẹ̀rọ backend òde òní."
+  },
   "nav": {
-    "projects": "Awon Ise",
-    "notes": "Akosile",
-    "experience": "Iriri",
-    "about": "Nipa Mi",
-    "sandbox": "Idanwo",
+    "projects": "Àwọn Iṣẹ́",
+    "notes": "Àkọsílẹ̀",
+    "experience": "Ìrírí",
+    "about": "Nípa Mi",
     "cv": "CV",
-    "contact": "Kan si Mi"
+    "contact": "Kàn sí Mi",
+    "play": "Eré",
+    "lab": "Láàbù"
   },
   "common": {
-    "menu": "Akojopo",
-    "close": "Ti",
-    "backToTop": "Pada si oke",
-    "searchCommands": "Wa ati awon ase",
-    "toggleTheme": "Yi awo pada",
-    "language": "Ede",
-    "availableForWork": "Mo wa fun ise",
-    "underConstruction": "A n ko"
+    "skipToContent": "Fò lọ sí àkóónú",
+    "primaryNav": "Ìtọ́sọ́nà pàtàkì",
+    "openMenu": "Ṣí àkójọ",
+    "closeMenu": "Pa àkójọ dé",
+    "close": "Pa á dé",
+    "search": "Wá",
+    "searchCommands": "Wá àti àwọn àṣẹ",
+    "backToTop": "Padà sí òkè",
+    "language": "Èdè",
+    "switchToLight": "Yí sí àwọ̀ ìmọ́lẹ̀",
+    "switchToDark": "Yí sí àwọ̀ òkùnkùn",
+    "aiComingSoon": "Olùrànlọ́wọ́ AI ń bọ̀ láìpẹ́.",
+    "noPreview": "Kò sí àwòrán"
   },
   "command": {
-    "placeholder": "Te ase tabi wa...",
-    "groupNavigate": "Lo si",
-    "groupActions": "Awon Ise",
-    "groupSocial": "Awujo",
-    "copyEmail": "Da adiresi imeeli",
-    "downloadCv": "Gba CV",
-    "viewNow": "Wo ohun ti mo n se",
-    "askAi": "Beere lowo AI",
-    "matchJd": "Fi we apejuwe ise",
-    "openGithub": "Si GitHub",
-    "openLinkedin": "Si LinkedIn",
-    "openTwitter": "Si Twitter",
-    "toggleTheme": "Yi awo pada",
-    "switchLanguage": "Yi ede pada",
-    "copied": "Ti da a",
-    "groupRecent": "Laipe yi"
+    "placeholder": "Tẹ àṣẹ kan tàbí wá...",
+    "noResults": "Kò sí èsì.",
+    "groupNavigate": "Lọ sí",
+    "groupActions": "Àwọn ìgbésẹ̀",
+    "groupSocial": "Àwùjọ",
+    "groupRecent": "Láìpẹ́ yìí",
+    "groupDeveloper": "Olùgbéejáde",
+    "copyEmail": "Ṣe ẹ̀dà àdírẹ́sì ímeèlì",
+    "copied": "A ti ṣe ẹ̀dà rẹ̀",
+    "emailCopied": "A ti ṣe ẹ̀dà ímeèlì náà",
+    "copyFailed": "Kò ṣeé ṣe ẹ̀dà. Ímeèlì: {email}",
+    "downloadCv": "Gba CV sílẹ̀",
+    "viewNow": "Wo ohun tí mo ń ṣe lọ́wọ́",
+    "askAi": "Béèrè lọ́wọ́ olùrànlọ́wọ́ AI",
+    "matchJd": "Fi wé àpèjúwe iṣẹ́ kan",
+    "openGithub": "Ṣí GitHub",
+    "openLinkedin": "Ṣí LinkedIn",
+    "openTwitter": "Ṣí Twitter",
+    "toggleTheme": "Yí àwọ̀ padà",
+    "switchLanguage": "Yí èdè padà",
+    "viewArchitecture": "Wo ètò ìkọ́lé",
+    "openApiDocs": "Ṣí ìwé API",
+    "currentStack": "Wo àwọn irinṣẹ́ mi",
+    "availability": "Wo bóyá mo wà",
+    "runDemo": "Ṣe àfihàn láàyè"
+  },
+  "footer": {
+    "blurb": "{role}. Ń gbé ní {location}.",
+    "navLabel": "Ìsàlẹ̀ ojú-ìwé",
+    "rights": "Gbogbo ẹ̀tọ́ wà ní ìpamọ́."
+  },
+  "sidebar": {
+    "years": "Ìrírí ọdún {count}+",
+    "companies": "Ilé-iṣẹ́ {count}",
+    "projects": "Iṣẹ́ {count} tí mo ti parí",
+    "available": "Mo wà fún iṣẹ́",
+    "engaged": "Mo ń ṣiṣẹ́ lọ́wọ́",
+    "downloadCv": "Gba CV sílẹ̀",
+    "email": "Ímeèlì"
+  },
+  "signals": {
+    "title": "Àmì láàyè",
+    "checking": "Ń ṣàyẹ̀wò",
+    "online": "Ń ṣiṣẹ́",
+    "offline": "Kò ṣiṣẹ́",
+    "assistant": "Olùrànlọ́wọ́ AI",
+    "ready": "Ó ti ṣetán",
+    "latestCommit": "Commit tó kẹ́yìn",
+    "lagos": "Èkó",
+    "recent": "láìpẹ́",
+    "justNow": "nísinsìnyí",
+    "minutes": "ìṣẹ́jú {n} sẹ́yìn",
+    "hours": "wákàtí {n} sẹ́yìn",
+    "days": "ọjọ́ {n} sẹ́yìn"
+  },
+  "mobileNav": {
+    "label": "Ìtọ́sọ́nà fóònù",
+    "home": "Ilé",
+    "work": "Iṣẹ́",
+    "ai": "AI",
+    "notes": "Àkọsílẹ̀",
+    "contact": "Kàn sí mi"
+  },
+  "hero": {
+    "showPulse": "Fi ìṣàn API hàn",
+    "showTerminal": "Fi tẹ́míníà hàn",
+    "systemOperational": "Ètò ń ṣiṣẹ́ dáadáa"
+  },
+  "home": {
+    "available": "Mo wà fún iṣẹ́, {location}",
+    "heroLead": "{role}. Mo ń kọ́ API, àwòṣe AI, àti ọ̀nà tó so wọ́n pọ̀.",
+    "viewWork": "Wo àwọn iṣẹ́ mi",
+    "getInTouch": "Kàn sí mi",
+    "featuredWork": "Àwọn iṣẹ́ pàtàkì",
+    "allProjects": "Gbogbo iṣẹ́",
+    "about": "Nípa mi",
+    "moreAboutMe": "Púpọ̀ sí i nípa mi",
+    "experience": "Ìrírí",
+    "fullHistory": "Ìtàn kíkún",
+    "at": "ní {company}",
+    "services": "Ohun tí mo ń ṣe",
+    "allServices": "Gbogbo ohun tí mo ń ṣe",
+    "recentNotes": "Àkọsílẹ̀ tuntun",
+    "allNotes": "Gbogbo àkọsílẹ̀",
+    "ctaTitle": "Jẹ́ ká kọ́ nǹkan papọ̀",
+    "ctaBody": "Mo wà fún iṣẹ́ alákòókò kíkún, iṣẹ́ òmìnira, àti àjọṣepọ̀."
+  },
+  "reel": {
+    "carousel": "àwòrán yíyí",
+    "label": "Àwọn iṣẹ́ pàtàkì",
+    "slide": "ojú-ìwé",
+    "slideLabel": "{n} nínú {total}: {title}",
+    "featured": "Pàtàkì",
+    "previous": "Iṣẹ́ tó ṣáájú",
+    "next": "Iṣẹ́ tó kàn",
+    "goTo": "Lọ sí iṣẹ́ {n}"
+  },
+  "now": {
+    "building": "ń kọ́ {what}"
+  },
+  "contrib": {
+    "title": "Àwọn àfikún",
+    "total": "Àfikún {count} ní ọdún tó kọjá",
+    "sample": "àpẹẹrẹ",
+    "cell": "Àfikún {count}",
+    "less": "Díẹ̀",
+    "more": "Púpọ̀"
+  },
+  "about": {
+    "title": "Nípa mi",
+    "lead": "{role}, tí ń gbé ní {location}.",
+    "education": "Ẹ̀kọ́",
+    "certifications": "Ìwé-ẹ̀rí",
+    "verify": "Ṣàyẹ̀wò"
+  },
+  "experience": {
+    "title": "Ìrírí",
+    "description": "Àwọn ipò àti ilé-iṣẹ́ nínú iṣẹ́ backend, AI, àti full-stack, pẹ̀lú ohun tí mo ṣe àkóso rẹ̀ tí mo sì gbé jáde ní ọ̀kọ̀ọ̀kan.",
+    "lead": "Ibi tí mo ti ṣiṣẹ́ àti ohun tí mo kọ́.",
+    "ongoing": "Ó ń lọ lọ́wọ́",
+    "type": {
+      "internship": "Ìkọ́ṣẹ́",
+      "fullTime": "Alákòókò kíkún",
+      "contract": "Àdéhùn",
+      "freelance": "Òmìnira",
+      "founder": "Olùdásílẹ̀"
+    }
+  },
+  "skills": {
+    "title": "Àwọn ọgbọ́n",
+    "description": "Backend, AI àti ML, frontend, dátà, àti amáyédẹrùn.",
+    "lead": "Àwọn irinṣẹ́ tí mo fi ń kọ́ nǹkan, tí a pín sí ẹ̀ka.",
+    "group": {
+      "backend": "Backend",
+      "aiMl": "AI àti ML",
+      "frontend": "Frontend",
+      "dataInfra": "Dátà àti amáyédẹrùn"
+    }
+  },
+  "services": {
+    "title": "Ohun tí mo ń ṣe",
+    "description": "Backend API, ètò AI àti RAG, adáṣiṣẹ́, àti iṣẹ́ full-stack: ohun tí mo lè ṣe, kọ́, kí n sì gbé jáde fún ẹgbẹ́ rẹ.",
+    "lead": "Iṣẹ́ ẹ̀rọ backend àti AI, láti API dé àwọn ètò aṣojú."
+  },
+  "projects": {
+    "title": "Àwọn iṣẹ́",
+    "description": "Àwọn ètò backend àti AI tí mo ti ṣe, tí mo kọ́, tí mo sì ti gbé jáde.",
+    "lead": "Gbogbo ohun tí mo ti ṣe, tí mo kọ́, tí mo sì ti gbé jáde. Àwọn ètò backend, AI, àti amáyédẹrùn tó wà láàárín wọn.",
+    "count": "Iṣẹ́ {count}",
+    "empty": "Kò sí iṣẹ́ tó bá àwọn àṣàyàn yìí mu."
+  },
+  "filters": {
+    "byDomain": "Ṣàṣàyàn nípa ẹ̀ka",
+    "byType": "Ṣàṣàyàn nípa irú",
+    "byStack": "Ṣàṣàyàn nípa ìmọ̀-ẹ̀rọ",
+    "domain": {
+      "all": "Gbogbo iṣẹ́",
+      "systems": "Àwọn ètò",
+      "intelligence": "Òye",
+      "commerce": "Ìṣòwò",
+      "product": "Ọjà"
+    },
+    "domainHint": {
+      "systems": "API, ètò ìkọ́lé, amáyédẹrùn",
+      "intelligence": "RAG, aṣojú, LLM, ML",
+      "commerce": "Ìsanwó, ààbò",
+      "product": "Àwọn áàpù full-stack"
+    },
+    "searchPlaceholder": "Wá àwọn iṣẹ́...",
+    "searchLabel": "Wá àwọn iṣẹ́",
+    "sortLabel": "To àwọn iṣẹ́",
+    "sortFeatured": "Àwọn pàtàkì kọ́kọ́",
+    "sortNewest": "Tuntun jùlọ kọ́kọ́",
+    "sortAz": "A sí Z",
+    "clear": "Pa á rẹ́"
+  },
+  "projectType": {
+    "all": "Gbogbo",
+    "client": "Oníbàárà",
+    "side": "Iṣẹ́ ẹ̀gbẹ́",
+    "finalYear": "Ọdún àṣekágbá",
+    "personal": "Ti ara ẹni"
+  },
+  "projectStatus": {
+    "live": "Láàyè",
+    "internal": "Ti gbé jáde",
+    "archived": "Àyẹ̀wò iṣẹ́"
+  },
+  "project": {
+    "back": "Padà sí àwọn iṣẹ́",
+    "liveSite": "Ojú-òpó láàyè",
+    "code": "Kóòdù",
+    "docs": "Ìwé àlàyé",
+    "techStack": "Àwọn ìmọ̀-ẹ̀rọ tí a lò"
+  },
+  "gallery": {
+    "enlarge": "Fẹ àwòrán {n} lójú",
+    "alt": "Àwòrán {n} ti {title}"
+  },
+  "evidence": {
+    "title": "Ẹ̀rí pé ó ń ṣiṣẹ́",
+    "liveSite": "Ojú-òpó láàyè",
+    "apiDocs": "Ìwé API",
+    "transcript": "Àkọsílẹ̀ ìgbìyànjú",
+    "benchmarkAlt": "Àtẹ ìwọ̀n iṣẹ́"
+  },
+  "diagram": {
+    "rag": "Ọ̀nà ìwákiri: láti ìwé dé ìdáhùn pẹ̀lú orísun",
+    "ragChatbot": "Ọ̀nà ìwákiri lẹ́yìn chatbot náà",
+    "agent": "Ìyípo aṣojú: gbèrò, lo irinṣẹ́, ṣàkíyèsí, tún ṣe",
+    "payment": "Ìgbésí ayé ìsanwó pẹ̀lú ìfìdímúlẹ̀ webhook"
+  },
+  "prevNext": {
+    "label": "Ìtọ́sọ́nà iṣẹ́",
+    "previous": "Tó ṣáájú",
+    "next": "Tó kàn"
+  },
+  "share": {
+    "label": "Pín",
+    "copied": "A ti ṣe ẹ̀dà ìtọ́kasí náà",
+    "failed": "Kò ṣeé pín"
+  },
+  "views": {
+    "count": "Ìwò {count}"
+  },
+  "notes": {
+    "title": "Àkọsílẹ̀",
+    "description": "Àkọsílẹ̀ iṣẹ́ ẹ̀rọ àti àyẹ̀wò iṣẹ́ lórí ètò backend, ọ̀nà RAG, àti gbígbé AI jáde sí ìlò gidi.",
+    "lead": "Èrò lórí iṣẹ́ ẹ̀rọ, tí ó dá lórí àwọn iṣẹ́ gidi.",
+    "minutes": "Ìṣẹ́jú {count}",
+    "filterLabel": "Ṣàṣàyàn àkọsílẹ̀ nípa àmì",
+    "allTags": "Gbogbo"
+  },
+  "note": {
+    "back": "Padà sí àkọsílẹ̀",
+    "readTime": "Ìṣẹ́jú {count} láti kà",
+    "navLabel": "Ìtọ́sọ́nà àkọsílẹ̀",
+    "tocLabel": "Àtòkọ àkóónú",
+    "onThisPage": "Lójú-ìwé yìí",
+    "copyCode": "Ṣe ẹ̀dà kóòdù",
+    "copied": "A ti ṣe ẹ̀dà rẹ̀"
+  },
+  "cv": {
+    "title": "Ìtàn Iṣẹ́ (CV)",
+    "description": "CV ti Ayinla Samuel Olorunwa, onímọ̀-ẹ̀rọ sọ́fítíwía full-stack tó dojúkọ backend àti AI: ìrírí, iṣẹ́ àkànṣe, àti ọgbọ́n.",
+    "englishNote": "CV yìí wà ní èdè Gẹ̀ẹ́sì, kí ó lè bá PDF tí o lè gbà sílẹ̀ mu.",
+    "downloadPdf": "Gba PDF sílẹ̀",
+    "print": "Tẹ̀ ẹ́ jáde",
+    "pdfFallback": "Kò ṣeé ṣe PDF náà, nítorí náà a ń ṣí ojú-ìwé ìtẹ̀jáde."
+  },
+  "licenses": {
+    "title": "Ìwé-àṣẹ",
+    "description": "Ìdúpẹ́ àti ìtọ́ka orísun fún àwọn fọ́ǹtì, àwòrán, àmì, àti ìkàwé orísun-ṣíṣí tí a fi kọ́ ojú-òpó yìí.",
+    "lead": "A fi sọ́fútúwià orísun-ṣíṣí kọ́ ojú-òpó yìí. A fún ẹni tó yẹ ní ìyìn.",
+    "footer": "Àwọn àwòrán àti àkóónú iṣẹ́ jẹ́ iṣẹ́ Ayinla Samuel Olorunwa, àyàfi níbi tí a ti fi iṣẹ́ kan fún oníbàárà tàbí agbanisíṣẹ́.",
+    "role": {
+      "framework": "Ìlànà React",
+      "ui": "Ilé-ìkàwé UI",
+      "styling": "Àṣà ìrísí",
+      "animation": "Ìṣípòpadà",
+      "i18n": "Ìtúmọ̀",
+      "palette": "Pátákó àṣẹ",
+      "icons": "Àwọn àmì",
+      "content": "Ọ̀nà àkóónú",
+      "highlighting": "Ìfihàn kóòdù",
+      "displayFont": "Irú lẹ́tà àkọlé àti ara",
+      "monoFont": "Irú lẹ́tà monospace",
+      "backend": "Backend Python",
+      "illustrations": "Àwọn àwòrán àpèjúwe"
+    }
+  },
+  "contact": {
+    "metaTitle": "Kàn sí mi",
+    "description": "Kàn sí mi nípa iṣẹ́ backend, AI, tàbí full-stack, iṣẹ́ àdáni, tàbí àjọṣepọ̀.",
+    "title": "Jẹ́ ká sọ̀rọ̀",
+    "lead": "Mo wà fún iṣẹ́ alákòókò kíkún, iṣẹ́ òmìnira, àti àjọṣepọ̀. Fi ìránṣẹ́ ránṣẹ́ tàbí kàn sí mi tààrà.",
+    "email": "Ímeèlì",
+    "phone": "Fóònù"
+  },
+  "contactForm": {
+    "name": "Orúkọ",
+    "namePlaceholder": "Orúkọ rẹ",
+    "email": "Ímeèlì",
+    "subject": "Kókó ọ̀rọ̀",
+    "subjectPlaceholder": "Kí ni èyí nípa?",
+    "message": "Ìránṣẹ́",
+    "messagePlaceholder": "Sọ fún mi nípa iṣẹ́ tàbí ipò rẹ.",
+    "send": "Fi ìránṣẹ́ ránṣẹ́",
+    "sending": "Ń fi ránṣẹ́...",
+    "sent": "A ti fi ránṣẹ́",
+    "sentToast": "A ti fi ìránṣẹ́ náà ránṣẹ́. Màá dá ọ lóhùn.",
+    "rateLimited": "Ìránṣẹ́ ti pọ̀ jù fún báyìí. Jọ̀wọ́ gbìyànjú lẹ́yìn náà tàbí fi ímeèlì ránṣẹ́ sí mi tààrà.",
+    "openingEmail": "A ń ṣí áàpù ímeèlì rẹ...",
+    "errName": "Orúkọ rẹ ṣe pàtàkì.",
+    "errEmailRequired": "Ímeèlì rẹ ṣe pàtàkì.",
+    "errEmailInvalid": "Ímeèlì yẹn kò dà bí èyí tó tọ́.",
+    "errMessage": "Jọ̀wọ́ kọ ó kéré tán lẹ́tà mẹ́wàá.",
+    "defaultSubject": "Ìkànsí láti ojú-òpó",
+    "from": "Láti ọ̀dọ̀"
+  },
+  "play": {
+    "metaTitle": "Eré",
+    "description": "Sinmi díẹ̀ kí o sì tún àwòrán náà tò. Igun ìsinmi ojú-òpó yìí.",
+    "kicker": "Sinmi díẹ̀",
+    "title": "Tún àwòrán náà tò",
+    "lead": "Fa àwọn àpótí láti pààrọ̀ wọn kí o sì tún àwòrán náà tò padà. Wọn àkókò ara rẹ bí o bá fẹ́. Yanjú rẹ̀ láti mọ nǹkan kan nípa mi."
+  },
+  "game": {
+    "title": "Sinmi díẹ̀",
+    "biggerLabel": "Ṣeré lójú-ìwé tó tóbi",
+    "quickPuzzle": "Ṣe àdojúrú kékeré kan",
+    "shuffle": "Dà á pọ̀",
+    "reveal": "Fi hàn",
+    "hide": "Fi pamọ́",
+    "bigger": "Tóbi",
+    "timeYourself": "Wọn àkókò ara rẹ",
+    "noTimer": "Láìsí aago",
+    "minutes": "Ìṣẹ́jú {n}",
+    "start": "Bẹ̀rẹ̀",
+    "howTo": "Fa àpótí kan sórí òmíràn láti pààrọ̀ wọn (tàbí tẹ ọ̀kan, lẹ́yìn náà tẹ òmíràn). Tún àwòrán náà tò.",
+    "left": "{time} ló kù",
+    "best": "tó dára jùlọ {time}",
+    "revealPicture": "Fi gbogbo àwòrán hàn",
+    "hidePicture": "Fi àwòrán pamọ́",
+    "reshuffle": "Tún dà á pọ̀",
+    "newPicture": "Àwòrán tuntun",
+    "tile": "Àpótí {n}",
+    "tilePicked": "Àpótí {n}, a ti gbé e",
+    "boardLabel": "Àdojúrú àwòrán: {label}",
+    "targetAlt": "Àfojúsùn: {label}",
+    "target": "àfojúsùn",
+    "timeUp": "Àkókò ti tán! Ó kù díẹ̀.",
+    "solved": "O ti yanjú rẹ̀!",
+    "solvedIn": "O yanjú rẹ̀ ní {time}",
+    "didYouKnow": "Ṣé o mọ̀?",
+    "playMore": "Ṣeré sí i láti mọ̀ sí i",
+    "image": {
+      "engineer": "PsalmNova, onímọ̀-ẹ̀rọ",
+      "portrait": "PsalmNova",
+      "office": "Níbi iṣẹ́",
+      "portrait2": "PsalmNova, lẹ́ẹ̀kan sí i",
+      "ai": "AI",
+      "code": "Kóòdù òru",
+      "money": "Fi owó hàn mí"
+    }
+  },
+  "lab": {
+    "metaTitle": "Láàbù",
+    "description": "Wo bí ó ṣe ń ṣiṣẹ́: pe API láàyè tó wà lẹ́yìn ojú-òpó yìí, kí o sì tẹ̀lé ètò ìkọ́lé àwọn ètò gidi.",
+    "title": "Wo bí ó ṣe ń ṣiṣẹ́",
+    "lead": "Ọ̀pọ̀ ojú-òpó iṣẹ́ máa ń sọ pé \"Mo ń kọ́ nǹkan.\" Èyí jẹ́ kí o yẹ̀ ẹ́ wò fúnra rẹ. Pe API láàyè tó wà lẹ́yìn ojú-òpó yìí, kí o sì tẹ̀lé ètò ìkọ́lé àwọn ètò gidi tí mo ti gbé jáde.",
+    "apiTitle": "Pápá ìṣeré API",
+    "apiLead": "Ìwọ̀nyí ń pe backend FastAPI gidi mi, láàyè. Yan ọ̀kan kí o rí ìdáhùn gan-an, ipò rẹ̀, àti àkókò tí ó gbà.",
+    "archTitle": "Olùwádìí ètò ìkọ́lé",
+    "archLead": "Tẹ̀lé bí ọ̀nà RAG, ìgbésí ayé ìsanwó, àti ìyípo aṣojú ṣe ń ṣiṣẹ́ gan-an, ọ̀kọ̀ọ̀kan so mọ́ iṣẹ́ tí ó ti wá."
+  },
+  "api": {
+    "endpoint": {
+      "health": "Àyẹ̀wò ìlera",
+      "now": "Ohun tí ń ṣẹlẹ̀ lọ́wọ́",
+      "contributions": "Àfikún GitHub",
+      "views": "Iye ìwò iṣẹ́",
+      "chat": "Béèrè lọ́wọ́ AI (ní ìṣàn)"
+    },
+    "openDocs": "Ṣí gbogbo ìwé API",
+    "response": "ìdáhùn",
+    "pick": "Yan ọ̀kan ní apá òsì láti pe backend láàyè.",
+    "failed": "Ìbéèrè kùnà (backend kò ṣiṣẹ́?).",
+    "noContent": "(kò sí àkóónú)",
+    "binary": "(ìdáhùn {type}, báìtì {size})"
+  },
+  "arch": {
+    "pickSystem": "Yan ètò kan",
+    "stages": "Àwọn ìpele",
+    "system": {
+      "rag": "Ọ̀nà RAG",
+      "payment": "Ìgbésí ayé ìsanwó",
+      "agent": "Ìṣàn iṣẹ́ aṣojú"
+    },
+    "seeItIn": "Wò ó nínú {name}",
+    "nextStage": "Ìpele tó kàn"
+  },
+  "ai": {
+    "open": "Béèrè lọ́wọ́ olùrànlọ́wọ́ AI",
+    "dialogLabel": "Olùrànlọ́wọ́ AI",
+    "title": "Béèrè nípa iṣẹ́ mi",
+    "intro": "Béèrè ohunkóhun nípa àwọn iṣẹ́, ìrírí, tàbí ọgbọ́n Samuel. Àwọn ìdáhùn dá lórí iṣẹ́ gidi rẹ̀. Olùrànlọ́wọ́ náà ń dáhùn ní èdè Gẹ̀ẹ́sì.",
+    "placeholder": "Béèrè nípa iṣẹ́ mi...",
+    "send": "Fi ránṣẹ́",
+    "sources": "Orísun",
+    "grounded": "Ó dá lórí API láàyè mi",
+    "error": "Má bínú, nǹkan kan ṣẹlẹ̀.",
+    "thinking": "Ń ronú",
+    "about": "Nípa mi",
+    "experience": "Ìrírí"
+  },
+  "notFound": {
+    "imageLabel": "A kò rí ojú-ìwé náà",
+    "title": "Ojú-ìwé yìí ti ṣìnà",
+    "lead": "Ojú-ìwé tí o ń wá kò sí, tàbí a ti gbé e lọ.",
+    "home": "Padà sí ilé"
   }
 }

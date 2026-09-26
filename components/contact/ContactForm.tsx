@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Send, Loader2, Check } from "lucide-react";
 import { site } from "@/content/site";
 import { toast } from "@/components/common/Toast";
@@ -7,16 +8,23 @@ import { toast } from "@/components/common/Toast";
 type State = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
+  const t = useTranslations("contactForm");
   const [state, setState] = useState<State>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   function validate(data: Record<string, string>) {
     const e: Record<string, string> = {};
-    if (!data.name?.trim()) e.name = "Your name is required.";
-    if (!data.email?.trim()) e.email = "Your email is required.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "That email does not look right.";
-    if (!data.message?.trim() || data.message.trim().length < 10) e.message = "Please write at least 10 characters.";
+    if (!data.name?.trim()) e.name = t("errName");
+    if (!data.email?.trim()) e.email = t("errEmailRequired");
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = t("errEmailInvalid");
+    if (!data.message?.trim() || data.message.trim().length < 10) e.message = t("errMessage");
     return e;
+  }
+
+  function openMailApp(data: Record<string, string>) {
+    const subject = encodeURIComponent(data.subject || t("defaultSubject"));
+    const body = encodeURIComponent(`${data.message}\n\n${t("from")}: ${data.name} (${data.email})`);
+    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
   }
 
   async function onSubmit(ev: React.FormEvent<HTMLFormElement>) {
@@ -40,16 +48,21 @@ export function ContactForm() {
         body: JSON.stringify({ name: data.name, email: data.email, subject: data.subject, message: data.message }),
       });
       if (!res.ok) throw new Error("bad status");
+      // The API answers 200 even when it refuses: read the status it reports.
+      const body = (await res.json().catch(() => ({}))) as { status?: string };
+      if (body.status === "rate_limited") {
+        setState("error");
+        toast(t("rateLimited"));
+        return;
+      }
       setState("sent");
-      toast("Message sent. I will get back to you.");
+      toast(t("sentToast"));
       form.reset();
     } catch {
-      // backend not up yet (Phase 6) or offline: fall back to mailto
-      const subject = encodeURIComponent(data.subject || "Portfolio contact");
-      const body = encodeURIComponent(`${data.message}\n\nFrom: ${data.name} (${data.email})`);
-      window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
+      // backend unreachable: fall back to the visitor's email app
+      openMailApp(data);
       setState("idle");
-      toast("Opening your email app...");
+      toast(t("openingEmail"));
     }
   }
 
@@ -62,24 +75,27 @@ export function ContactForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="name" className="mb-1.5 block text-sm text-muted">Name</label>
-          <input id="name" name="name" className={field} placeholder="Your name" aria-invalid={!!errors.name} />
-          {errors.name && <p className="mt-1 text-xs text-warn">{errors.name}</p>}
+          <label htmlFor="name" className="mb-1.5 block text-sm text-muted">{t("name")}</label>
+          <input id="name" name="name" autoComplete="name" className={field} placeholder={t("namePlaceholder")}
+            aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} />
+          {errors.name && <p id="name-error" className="mt-1 text-xs text-warn-ink">{errors.name}</p>}
         </div>
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-sm text-muted">Email</label>
-          <input id="email" name="email" type="email" className={field} placeholder="you@example.com" aria-invalid={!!errors.email} />
-          {errors.email && <p className="mt-1 text-xs text-warn">{errors.email}</p>}
+          <label htmlFor="email" className="mb-1.5 block text-sm text-muted">{t("email")}</label>
+          <input id="email" name="email" type="email" autoComplete="email" className={field} placeholder="you@example.com"
+            aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} />
+          {errors.email && <p id="email-error" className="mt-1 text-xs text-warn-ink">{errors.email}</p>}
         </div>
       </div>
       <div>
-        <label htmlFor="subject" className="mb-1.5 block text-sm text-muted">Subject</label>
-        <input id="subject" name="subject" className={field} placeholder="What is this about?" />
+        <label htmlFor="subject" className="mb-1.5 block text-sm text-muted">{t("subject")}</label>
+        <input id="subject" name="subject" className={field} placeholder={t("subjectPlaceholder")} />
       </div>
       <div>
-        <label htmlFor="message" className="mb-1.5 block text-sm text-muted">Message</label>
-        <textarea id="message" name="message" rows={5} className={field} placeholder="Tell me about your project or role." aria-invalid={!!errors.message} />
-        {errors.message && <p className="mt-1 text-xs text-warn">{errors.message}</p>}
+        <label htmlFor="message" className="mb-1.5 block text-sm text-muted">{t("message")}</label>
+        <textarea id="message" name="message" rows={5} className={field} placeholder={t("messagePlaceholder")}
+          aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined} />
+        {errors.message && <p id="message-error" className="mt-1 text-xs text-warn-ink">{errors.message}</p>}
       </div>
       <button
         type="submit"
@@ -87,7 +103,7 @@ export function ContactForm() {
         className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-opacity hover:opacity-90 disabled:opacity-60"
       >
         {state === "sending" ? <Loader2 size={16} className="animate-spin" /> : state === "sent" ? <Check size={16} /> : <Send size={16} />}
-        {state === "sending" ? "Sending..." : state === "sent" ? "Sent" : "Send message"}
+        {state === "sending" ? t("sending") : state === "sent" ? t("sent") : t("send")}
       </button>
     </form>
   );

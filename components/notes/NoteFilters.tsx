@@ -1,7 +1,9 @@
 "use client";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export function NoteFilters({ tags }: { tags: string[] }) {
+  const t = useTranslations("notes");
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -15,15 +17,15 @@ export function NoteFilters({ tags }: { tags: string[] }) {
   };
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2" role="group" aria-label={t("filterLabel")}>
       <button onClick={() => pick("")} aria-pressed={!active}
         className={"rounded-full border px-3 py-1.5 text-sm transition-colors " + (!active ? "border-accent bg-accent text-white" : "border-line text-muted hover:text-ink")}>
-        All
+        {t("allTags")}
       </button>
-      {tags.map((t) => (
-        <button key={t} onClick={() => pick(t)} aria-pressed={active === t}
-          className={"rounded-full border px-3 py-1.5 text-sm transition-colors " + (active === t ? "border-accent bg-accent text-white" : "border-line text-muted hover:text-ink")}>
-          {t}
+      {tags.map((tg) => (
+        <button key={tg} onClick={() => pick(tg)} aria-pressed={active === tg}
+          className={"rounded-full border px-3 py-1.5 text-sm transition-colors " + (active === tg ? "border-accent bg-accent text-white" : "border-line text-muted hover:text-ink")}>
+          {tg}
         </button>
       ))}
     </div>

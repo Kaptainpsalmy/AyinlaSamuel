@@ -9,6 +9,21 @@ from fastapi import FastAPI
 from api.core.config import settings
 from api.routers import health, now, github, contact, views, resume, chat
 
+# Error reporting (Sentry) only on Vercel with a DSN set, so local runs never
+# spend the free quota. The FastAPI integration switches on automatically.
+# Privacy: no request bodies (contact form, chat questions), no local variables,
+# no cookies or IPs. Reports carry the error, stack trace and endpoint.
+if settings.sentry_dsn and settings.vercel_env != "development":
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=settings.sentry_dsn,
+        environment=settings.vercel_env,
+        send_default_pii=False,
+        max_request_body_size="never",
+        include_local_variables=False,
+    )
+
 app = FastAPI(
     title="PsalmNova API",
     version=settings.version,

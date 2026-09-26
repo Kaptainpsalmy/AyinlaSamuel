@@ -11,6 +11,11 @@ const projects = defineCollection({
       title: s.string(),
       tagline: s.string(),
       type: s.enum(["client", "side", "final-year", "personal"]),
+      // Engineering domain for the projects filter (Phase 4). Defaults to
+      // "product" so an unlabeled project still lands in a real bucket.
+      domain: s
+        .enum(["systems", "intelligence", "commerce", "product"])
+        .default("product"),
       categories: s.array(s.string()).default([]),
       stack: s.array(s.string()).default([]),
       year: s.string(),

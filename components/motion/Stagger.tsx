@@ -1,30 +1,57 @@
 "use client";
 import { motion, useReducedMotion } from "motion/react";
+import { distance, duration, ease, instant, staggerGap, viewport } from "@/lib/motion-config";
 
-export function Stagger({ children, className }: { children: React.ReactNode; className?: string }) {
+/**
+ * Reveals its StaggerItem children one after another as the group scrolls into
+ * view. Same markup with or without reduced motion; only the timing collapses.
+ */
+export function Stagger({
+  children,
+  className,
+  as = "div",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  as?: "div" | "ul" | "ol";
+}) {
   const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
+  const Tag = motion[as];
   return (
-    <motion.div
+    <Tag
       className={className}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-60px" }}
-      variants={{ show: { transition: { staggerChildren: 0.07 } } }}
+      viewport={viewport}
+      variants={{ show: { transition: reduce ? instant : { staggerChildren: staggerGap } } }}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }
 
-export function StaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className,
+  as = "div",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  as?: "div" | "li";
+}) {
+  const reduce = useReducedMotion();
+  const Tag = motion[as];
   return (
-    <motion.div
+    <Tag
+      data-reveal=""
       className={className}
-      variants={{ hidden: { opacity: 0, y: 14 }, show: { opacity: 1, y: 0 } }}
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      variants={{
+        hidden: { opacity: 0, y: distance.staggerItem },
+        show: { opacity: 1, y: 0 },
+      }}
+      transition={reduce ? instant : { duration: duration.stagger, ease: ease.out }}
     >
       {children}
-    </motion.div>
+    </Tag>
   );
 }

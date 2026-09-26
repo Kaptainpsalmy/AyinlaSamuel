@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Eye } from "lucide-react";
 import { incrementView, fetchViews } from "@/lib/api-client";
 
 export function ViewCounter({ slug }: { slug: string }) {
+  const t = useTranslations("views");
   const [views, setViews] = useState<number | null>(null);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export function ViewCounter({ slug }: { slug: string }) {
   if (views === null || views === 0) return null;
   return (
     <span className="inline-flex items-center gap-1.5 font-mono text-xs text-muted">
-      <Eye size={13} /> {views.toLocaleString()} view{views === 1 ? "" : "s"}
+      <Eye size={13} /> {t("count", { count: views })}
     </span>
   );
 }

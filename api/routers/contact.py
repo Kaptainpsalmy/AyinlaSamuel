@@ -58,7 +58,17 @@ async def _persist(data: ContactIn, sent: bool) -> None:
         pass
 
 
-@router.post("/api/py/contact", summary="Send a contact message")
+@router.post(
+    "/api/py/contact",
+    summary="Send a contact message",
+    responses={
+        200: {
+            "description": "Message handled. `sent` when email delivery is configured, "
+            "`stored` when it is only persisted, `rate_limited` when the caller is over the limit.",
+            "content": {"application/json": {"example": {"status": "sent"}}},
+        }
+    },
+)
 async def contact(data: ContactIn, request: Request) -> dict:
     # honeypot: pretend success for bots
     if data.company:

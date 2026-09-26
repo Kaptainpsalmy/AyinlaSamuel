@@ -15,7 +15,23 @@ query($login:String!){ user(login:$login){ contributionsCollection{
 """
 
 
-@router.get("/api/py/github/contributions", summary="Contribution calendar")
+@router.get(
+    "/api/py/github/contributions",
+    summary="Contribution calendar",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": {
+                        "source": "github",
+                        "total": 5305,
+                        "weeks": [[0, 1, 3, 0, 2, 4, 1], [2, 0, 0, 5, 1, 0, 3]],
+                    }
+                }
+            }
+        }
+    },
+)
 async def contributions() -> dict:
     """Weeks of contribution counts. Real when a GitHub token is set, else a sample."""
     if settings.github_token:

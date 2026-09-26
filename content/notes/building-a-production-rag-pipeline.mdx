@@ -17,11 +17,47 @@ The single most important rule: the model answers **only** from retrieved contex
 source, and refuses when the context does not support an answer. Fluent but unsourced answers
 are worse than "I do not know."
 
+```python
+SYSTEM = (
+    "Answer ONLY from the context below. "
+    "Cite the source id in [brackets]. "
+    "If the context does not contain the answer, say you do not know."
+)
+
+def build_prompt(question: str, chunks: list[Chunk]) -> list[Message]:
+    context = "\n\n".join(f"[{c.id}] {c.text}" for c in chunks)
+    return [
+        {"role": "system", "content": SYSTEM},
+        {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {question}"},
+    ]
+```
+
 ## Hybrid retrieval
 
 Pure vector search misses exact matches (a specific command code), and pure keyword search
 misses paraphrases. I used both, vector similarity plus keyword, and re-ranked the union for
 the final context.
+
+```python
+async def retrieve(question: str, k: int = 6) -> list[Chunk]:
+    q_vec = embed(question)  # local model, no per-query cost
+
+    # dense: pgvector cosine similarity
+    dense = await db.fetch(
+        "SELECT id, text, 1 - (embedding <=> $1) AS score "
+        "FROM chunks ORDER BY embedding <=> $1 LIMIT $2",
+        q_vec, k,
+    )
+    # sparse: full-text keyword match, catches exact command codes
+    sparse = await db.fetch(
+        "SELECT id, text, ts_rank(tsv, plainto_tsquery($1)) AS score "
+        "FROM chunks WHERE tsv @@ plainto_tsquery($1) "
+        "ORDER BY score DESC LIMIT $2",
+        question, k,
+    )
+    # reciprocal-rank fusion over the union, then take the top k
+    return rrf_merge(dense, sparse)[:k]
+```
 
 ## The unglamorous parts
 

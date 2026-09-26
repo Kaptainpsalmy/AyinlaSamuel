@@ -3,7 +3,8 @@ export const site = {
   name: "Ayinla Samuel Olorunwa",
   shortName: "Ayinla Samuel",
   brand: "PsalmNova",
-  role: "Backend & AI Software Engineer",
+  role: "Full-Stack Software Engineer, Backend & AI focus",
+  roleShort: "Backend & AI Engineer",
   tagline:
     "I build intelligent and automated solutions using Python, AI, and modern backend technologies.",
   location: "Lagos, Nigeria",
@@ -21,11 +22,12 @@ export const site = {
     twitter: "https://twitter.com/kaptainpsalmy",
     whatsapp: "https://wa.me/2349039295254",
   },
-  // 3-paragraph bio (verbatim from current site, lightly tightened).
+  // 3-paragraph bio: full-stack framing, backend and AI as the specialization,
+  // frontend shown as an owned skill (Samuel designs and builds his own UI).
   bio: [
-    "I am a Backend and AI Software Engineer focused on building scalable APIs, backend systems, automation platforms, and intelligent AI-powered applications using Python, FastAPI, Django, Flask, Node.js, and Laravel.",
+    "I am a Full-Stack Software Engineer who specializes in backend and AI. I build scalable APIs, backend systems, automation platforms, and intelligent AI-powered applications using Python, FastAPI, Django, Flask, Node.js, and Laravel, and I design and build my own product interfaces with React, Next.js, and TypeScript.",
     "My experience includes backend architecture, asynchronous processing, authentication systems, Redis-based task queues, database optimization, third-party API integrations, and cloud deployment workflows. I also specialize in AI systems engineering, including agentic AI workflows, Retrieval-Augmented Generation (RAG), multi-agent systems, and intelligent automation.",
-    "I enjoy designing reliable production-grade software systems that combine modern backend engineering with advanced AI capabilities to solve real-world problems efficiently and at scale.",
+    "I own the complete product experience, from the interface down to the API and the pipeline in between. My focus is backend and AI engineering, and I enjoy designing reliable production-grade systems that solve real-world problems efficiently and at scale.",
   ],
   education: {
     degree: "B.Tech, Computer Engineering",
@@ -40,7 +42,8 @@ export const nav = [
   { href: "/notes", label: "Notes" },
   { href: "/experience", label: "Experience" },
   { href: "/about", label: "About" },
-  { href: "/sandbox", label: "Sandbox" },
+  { href: "/lab", label: "Lab" },
+  { href: "/play", label: "Play" },
   { href: "/cv", label: "CV" },
   { href: "/contact", label: "Contact" },
 ] as const;

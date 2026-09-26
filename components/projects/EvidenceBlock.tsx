@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { BadgeCheck, FileText, ExternalLink } from "lucide-react";
 
 type Evidence = {
@@ -8,35 +9,37 @@ type Evidence = {
   verified?: string;
 };
 
-export function EvidenceBlock({ evidence, live }: { evidence?: Evidence; live?: string }) {
+export async function EvidenceBlock({ evidence, live }: { evidence?: Evidence; live?: string }) {
   if (!evidence) return null;
+  const t = await getTranslations("evidence");
   const { verified, swagger, transcript, benchmark } = evidence;
   return (
     <aside className="rounded-[22px] border border-accent/30 bg-accent/5 p-6">
       <div className="flex items-center gap-2 text-accent-2">
         <BadgeCheck size={18} />
-        <h2 className="font-mono text-xs font-bold uppercase tracking-widest">Proof it works</h2>
+        <h2 className="font-mono text-xs font-bold uppercase tracking-widest">{t("title")}</h2>
       </div>
 
+      {/* The verification note itself is case-study content and stays English. */}
       {verified && <p className="mt-3 text-sm leading-relaxed text-ink">{verified}</p>}
 
       <div className="mt-4 flex flex-wrap gap-2">
         {live && (
           <a href={live} target="_blank" rel="noopener noreferrer"
              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-canvas px-3 py-1.5 text-xs hover:border-accent">
-            <ExternalLink size={13} /> Live site
+            <ExternalLink size={13} /> {t("liveSite")}
           </a>
         )}
         {swagger && (
           <a href={swagger} target="_blank" rel="noopener noreferrer"
              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-canvas px-3 py-1.5 text-xs hover:border-accent">
-            <FileText size={13} /> API docs
+            <FileText size={13} /> {t("apiDocs")}
           </a>
         )}
         {transcript && (
           <a href={transcript} target="_blank" rel="noopener noreferrer"
              className="inline-flex items-center gap-1.5 rounded-full border border-line bg-canvas px-3 py-1.5 text-xs hover:border-accent">
-            <FileText size={13} /> Run transcript
+            <FileText size={13} /> {t("transcript")}
           </a>
         )}
       </div>
@@ -45,7 +48,7 @@ export function EvidenceBlock({ evidence, live }: { evidence?: Evidence; live?: 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           {benchmark.map((src) => (
             <div key={src} className="relative aspect-[4/3] overflow-hidden rounded-lg border border-line bg-canvas">
-              <Image src={src} alt="Benchmark chart" fill sizes="50vw" className="object-contain p-2" />
+              <Image src={src} alt={t("benchmarkAlt")} fill sizes="50vw" className="object-contain p-2" />
             </div>
           ))}
         </div>

@@ -1,3 +1,6 @@
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { pageMeta } from "@/lib/seo";
 import { site } from "@/content/site";
 import { experience } from "@/content/experience";
 import { skills } from "@/content/skills";
@@ -5,19 +8,28 @@ import { certifications } from "@/content/certifications";
 import { projects } from "@/.velite";
 import { CvActions } from "@/components/cv/CvActions";
 
-export const metadata = { title: "CV", description: "Curriculum vitae for Ayinla Samuel Olorunwa." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("cv");
+  return pageMeta({ title: "CV", description: t("description"), path: "/cv" });
+}
 
 const featured = [...projects].filter((p) => p.featured).sort((a, b) => a.order - b.order).slice(0, 6);
 
-export default function CvPage() {
+export default async function CvPage() {
+  const t = await getTranslations("cv");
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 print:max-w-none print:py-0">
-      <div className="mb-8 flex items-center justify-between print:hidden">
-        <h1 className="text-3xl font-bold">Curriculum Vitae</h1>
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 print:hidden">
+        <div>
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
+          <p className="mt-1 text-sm text-muted">{t("englishNote")}</p>
+        </div>
         <CvActions />
       </div>
 
-      <article className="cv space-y-8 print:text-black">
+      {/* The CV document stays English on purpose: it must match the PDF that
+          recruiters download, and that is the language they read it in. */}
+      <article lang="en" className="cv space-y-8 print:text-black">
         {/* header */}
         <header className="border-b border-line pb-6 print:border-black/20">
           <h2 className="text-3xl font-bold">{site.name}</h2>

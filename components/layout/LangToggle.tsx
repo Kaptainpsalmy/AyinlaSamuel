@@ -1,11 +1,12 @@
 "use client";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { setLocale } from "@/i18n/actions";
 
 /** EN / YO switch. Persists via a cookie (server action), then refreshes. */
 export function LangToggle() {
+  const t = useTranslations("common");
   const locale = useLocale();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -21,7 +22,7 @@ export function LangToggle() {
   return (
     <div
       role="group"
-      aria-label="Language"
+      aria-label={t("language")}
       className="inline-flex items-center rounded-full border border-line text-xs font-medium"
       data-pending={pending || undefined}
     >

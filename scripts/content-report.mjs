@@ -11,7 +11,9 @@ const countIn = (file, marker) =>
   (fs.readFileSync(file, "utf8").match(new RegExp(marker, "g")) || []).length;
 
 const experience = (fs.readFileSync("content/experience.ts","utf8").match(/^    role:/gm)||[]).length;
-const skills = countIn("content/skills.ts", "label:");
+// Count real groups only (each starts with `  {` then a `label:`), not the type
+// definition's own `label:` field.
+const skills = (fs.readFileSync("content/skills.ts","utf8").match(/^  \{\n\s*(?:\/\/[^\n]*\n\s*)?label:/gm)||[]).length;
 const skillItems = (fs.readFileSync("content/skills.ts", "utf8").match(/"/g) || []).length; // rough
 const services = (fs.readFileSync("content/services.ts","utf8").match(/^  \{ icon:/gm)||[]).length;
 const certs = (fs.readFileSync("content/certifications.ts","utf8").match(/^  \{ title:/gm)||[]).length;
@@ -28,6 +30,10 @@ console.log(`Certifications: ${certs}`);
 const featured = projects.filter((p) => p.featured).map((p) => p.title);
 console.log(`\nFeatured (${featured.length}):`);
 featured.forEach((t) => console.log("  * " + t));
+
+// engineering domain distribution (drives the Phase 4 projects filter)
+const domains = projects.reduce((a, p) => ((a[p.domain] = (a[p.domain] || 0) + 1), a), {});
+console.log(`\nDomains: ${Object.entries(domains).map(([k, v]) => `${k} ${v}`).join(" · ")}`);
 
 // VERIFY flags: frontmatter verify:true, inline [VERIFY], or evidence.verified present
 console.log("\n=== NEEDS SAMUEL'S REVIEW ([VERIFY] / verify:true) ===");
