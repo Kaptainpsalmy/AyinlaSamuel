@@ -1,7 +1,10 @@
+# Install scripts pnpm may run. All off: each of these packages ships prebuilt
+# binaries, and the scripts only rebuild or re-check them. An unanswered entry
+# makes `pnpm install --frozen-lockfile` fail, which would fail a Vercel deploy.
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  '@swc/core': set this to true or false
-  esbuild: set this to true or false
+  '@parcel/watcher': false
+  '@swc/core': false
+  esbuild: false
   sharp: false
   unrs-resolver: false
 dangerouslyAllowAllBuilds: false
