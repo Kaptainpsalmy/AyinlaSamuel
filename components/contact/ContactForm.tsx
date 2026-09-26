@@ -55,11 +55,13 @@ export function ContactForm() {
         toast(t("rateLimited"));
         return;
       }
+      // Neither emailed nor saved on the server: hand over to the email app below.
+      if (body.status === "unavailable") throw new Error("unavailable");
       setState("sent");
       toast(t("sentToast"));
       form.reset();
     } catch {
-      // backend unreachable: fall back to the visitor's email app
+      // backend unreachable or could not deliver: fall back to the visitor's email app
       openMailApp(data);
       setState("idle");
       toast(t("openingEmail"));

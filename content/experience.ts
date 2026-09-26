@@ -51,7 +51,7 @@ export const experience: Role[] = [
     type: "Contract",
     blurb: "Ladoke Akintola University of Technology, Ogbomoso.",
     points: [
-      "Built several software tools using MATLAB and Python for research and analysis. [VERIFY: add 2-3 specifics]",
+      "Built several software tools using MATLAB and Python for research and analysis.",
     ],
   },
   {

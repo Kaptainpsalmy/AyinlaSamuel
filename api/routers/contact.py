@@ -1,5 +1,7 @@
 """Contact form: validate -> rate-limit -> send (Resend) -> persist (Neon).
-Degrades to persist-only when Resend is unset, and to accept-only when the DB is unset.
+Degrades to persist-only when Resend is unset. When the message was neither
+emailed nor saved it answers `unavailable`, and the form falls back to the
+visitor's email app: a message is never silently dropped.
 """
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
@@ -45,17 +47,19 @@ async def _send_email(data: ContactIn) -> bool:
         return False
 
 
-async def _persist(data: ContactIn, sent: bool) -> None:
+async def _persist(data: ContactIn, sent: bool) -> bool:
+    """Save the message; True only if it was actually written."""
     maker = session_maker()
     if maker is None:
-        return
+        return False
     try:
         async with maker() as db:
             db.add(ContactMessage(name=data.name, email=data.email, subject=data.subject,
                                   message=data.message, sent=sent))
             await db.commit()
+        return True
     except Exception:
-        pass
+        return False
 
 
 @router.post(
@@ -64,7 +68,8 @@ async def _persist(data: ContactIn, sent: bool) -> None:
     responses={
         200: {
             "description": "Message handled. `sent` when email delivery is configured, "
-            "`stored` when it is only persisted, `rate_limited` when the caller is over the limit.",
+            "`stored` when it is only persisted, `unavailable` when it could be neither sent "
+            "nor stored, `rate_limited` when the caller is over the limit.",
             "content": {"application/json": {"example": {"status": "sent"}}},
         }
     },
@@ -83,5 +88,7 @@ async def contact(data: ContactIn, request: Request) -> dict:
 
     data.message = clean(data.message)
     sent = await _send_email(data)
-    await _persist(data, sent)
-    return {"status": "sent" if sent else "stored"}
+    stored = await _persist(data, sent)
+    if sent:
+        return {"status": "sent"}
+    return {"status": "stored" if stored else "unavailable"}
