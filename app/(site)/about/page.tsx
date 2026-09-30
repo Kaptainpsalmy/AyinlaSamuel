@@ -7,7 +7,7 @@ import { certifications } from "@/content/certifications";
 import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { ExternalLink, GraduationCap, Award } from "lucide-react";
+import { ExternalLink, GraduationCap, Award, Languages } from "lucide-react";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("about");
@@ -43,6 +43,18 @@ export default async function AboutPage() {
           <p className="mt-1 text-muted">{site.education.school}</p>
           <p className="text-sm text-muted">{site.education.location}</p>
         </Card>
+      </Reveal>
+
+      {/* Spoken languages (codes in site.languages feed the Person JSON-LD) */}
+      <Reveal className="mt-12">
+        <h2 className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted">
+          <Languages size={15} /> {t("languages")}
+        </h2>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {[t("langEnglish"), t("langYoruba"), t("langPidgin")].map((name) => (
+            <li key={name} className="rounded-full border border-line px-4 py-2 text-sm">{name}</li>
+          ))}
+        </ul>
       </Reveal>
 
       {/* Certifications */}

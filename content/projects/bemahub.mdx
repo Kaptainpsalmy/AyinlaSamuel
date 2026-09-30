@@ -50,10 +50,44 @@ BEMA's, not my own content.
 - A **149-test launch-readiness verification suite** that re-derives platform state from the
   live database.
 
+## Architecture
+
+- **One source of truth.** Business rules live in the BMH REST API plugin; the Next.js
+  frontend only displays what the API decides.
+- **Payments.** A separate payments plugin handles Paystack and PayPal, their webhooks,
+  and the access grants that follow a successful payment.
+- **Money keeps its currency.** Each transaction stores the amount and currency that were
+  actually paid, instead of converting through a base currency.
+- **Prices are fixed when saved.** Exchange rates for all nine supported currencies are
+  locked into a snapshot when a price is saved, so a quote never moves on its own.
+
+## Engineering challenges
+
+- **A NGN 10,000 refund that paid back NGN 10,005**: money converted there and back at two
+  different rates, and a currency check that was true for every campaign.
+  [Read the note](/notes/the-refund-that-paid-back-more).
+- **Prices that changed twice a day** with nobody editing them, from level prices worked
+  out at read time against a live rate. [Read the note](/notes/prices-that-changed-by-themselves).
+- **Referral rewards that silently stopped for six days**, because the autoloader didn't know
+  a folder existed. [Read the note](/notes/one-missing-line-stopped-referral-rewards).
+
+## Tradeoffs
+
+- **Stored currency over a single base currency.** Every amount carries its own currency, so
+  reports have to handle several currencies, but no amount ever drifts through conversion.
+- **Save-time prices over live prices.** A saved price keeps its locked rate until someone
+  saves it again, in exchange for quotes that never change unexpectedly.
+
 ## Stack
 
 PHP on WordPress, MySQL, a REST API under `/wp-json/bmh/v1`, JWT and social auth, Paystack
 and PayPal, AWS S3, and WordPress Action Scheduler for background jobs.
+
+## Lessons
+
+- Never convert money there and back. Store what was paid, in the currency it was paid in.
+- Calculate prices when they are saved, not when they are read.
+- A health check that counts what is pending cannot see what is failing.
 
 ## Proof
 

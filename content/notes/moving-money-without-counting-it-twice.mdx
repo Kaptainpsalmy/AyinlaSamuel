@@ -1,0 +1,47 @@
+---
+title: 'Moving money without losing it or counting it twice'
+excerpt: 'Webhooks get resent, networks time out, and two requests can touch one balance. The layers that keep a cooperative''s payments exact.'
+date: 2026-09-30
+tags: [payments, backend, django]
+---
+
+The IASG Cooperative platform takes real payments through Flutterwave and changes real savings and loan balances. Payment providers resend webhooks, networks time out mid-request, and two requests can touch the same balance at once. Any of those, handled carelessly, credits a member twice or loses a payment.
+
+Here is what keeps it exact.
+
+## Never trust the webhook body
+
+A payment notification only *triggers* processing. Before any balance changes, the payment is re-verified directly with Flutterwave's servers.
+
+## A signature check that can't be bypassed by accident
+
+The webhook signature is checked with a constant-time comparison. While building it I caught a subtle hole:
+
+```python
+import hmac
+
+hmac.compare_digest("", "")  # True
+```
+
+If the secret were ever missing from the environment, an **unsigned** request would have passed. The check now refuses an empty secret outright.
+
+## Idempotent at every layer
+
+- Webhooks are de-duplicated by event ID.
+- A payment already marked successful is a no-op.
+- The savings credit takes an idempotency key as a final safety net.
+
+## Locks, retries and one door for balances
+
+- **Row locking.** Savings and loan balances are updated under `select_for_update()`, so two concurrent payments can't read the same starting balance.
+- **Retry only when it's safe.** The Flutterwave client retries server errors and dropped connections with exponential backoff (1s, 2s, 4s), but never a 4xx. A 4xx is a real rejection, and retrying it could submit the payment twice.
+- **One place where a loan balance changes.** Card repayments and salary deductions both go through a single repayment service, so the rules live in one place.
+- **Payroll that fails row by row.** Each row of a monthly salary-deduction batch runs in its own savepoint. One bad row is flagged and reported without rolling back everyone else's deduction.
+
+## A bug the integration tests caught
+
+The "process payroll batch" endpoint returned a stale snapshot: the batch said `PROCESSING` with zero rows done, while the database said `COMPLETED`. The unit test had only checked a local variable, never the actual response, which is how it slipped through. It's fixed, and the test now checks what the API really returns.
+
+## The maths is exact too
+
+Loan maths uses `Decimal`, never float: flat, reducing-balance and compound interest, rounded half-up to the kobo. The last month of every repayment schedule takes the remaining balance, so a schedule always closes at exactly zero instead of leaving a stray kobo outstanding.

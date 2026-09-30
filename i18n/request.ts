@@ -12,5 +12,8 @@ export default getRequestConfig(async () => {
     cookieLocale && locales.includes(cookieLocale) ? cookieLocale : defaultLocale;
 
   const messages = (await import(`../messages/${locale}.json`)).default;
-  return { locale, messages };
+  // Dates are stored as midnight UTC; formatting them in Lagos time keeps the day
+  // right no matter where the page is rendered (a US-timezone machine showed the
+  // day before).
+  return { locale, messages, timeZone: "Africa/Lagos" };
 });

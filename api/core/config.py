@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     github_token: str | None = None
     groq_api_key: str | None = None
     sentry_dsn: str | None = None  # error reporting; off when unset
+    # Other GitHub accounts whose contributions are added into the one graph, comma
+    # separated. Kept in the environment, not in code, so the names stay private.
+    github_extra_users: str | None = None
     vercel_env: str = "development"  # set by Vercel: production / preview
 
     version: str = "0.1.0"

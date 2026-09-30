@@ -21,7 +21,10 @@ EXPERIENCE = [
         "Integrated Paystack and PayPal, S3 signed media, and a 149-test launch-readiness suite.",
     ]),
     ("Data Scientist / AI-ML", "Computer Engineering, LAUTECH", "2024 - Present", [
-        "Built software tools using MATLAB and Python for research and analysis.",
+        "Built MATLAB and Python research tools for researchers and students: CNN models for face and "
+        "face-mask recognition, mammogram analysis, and fabric-defect detection.",
+        "Built the tools' interfaces with MATLAB App Designer and GUIDE; evaluated models with accuracy, "
+        "precision, sensitivity, FPR, and FRR.",
     ]),
     ("Backend & AI Software Engineer", "Freelance / Contract", "2022 - Present", [
         "Designed and shipped scalable backend systems and RESTful APIs.",

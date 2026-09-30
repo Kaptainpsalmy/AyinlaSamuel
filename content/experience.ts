@@ -51,7 +51,9 @@ export const experience: Role[] = [
     type: "Contract",
     blurb: "Ladoke Akintola University of Technology, Ogbomoso.",
     points: [
-      "Built several software tools using MATLAB and Python for research and analysis.",
+      "Built MATLAB and Python research tools for researchers and students, including CNN image-recognition models for face and face-mask recognition, mammogram analysis, and fabric-defect detection.",
+      "Designed desktop interfaces for the tools with MATLAB App Designer and GUIDE, on top of MATLAB's machine learning and neural network toolboxes.",
+      "Evaluated every model with accuracy, precision, sensitivity, false positive rate (FPR), and false rejection rate (FRR).",
     ],
   },
   {

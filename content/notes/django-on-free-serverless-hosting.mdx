@@ -1,0 +1,27 @@
+---
+title: 'Running a Django backend on free serverless hosting'
+excerpt: 'The plan assumed a rented server. The constraint was free hosting. What had to change, and the three bugs behind a 500 on every request.'
+date: 2026-09-30
+tags: [django, serverless, deployment]
+---
+
+The original plan for the IASG Cooperative backend assumed a rented server: Docker, Nginx, a Redis-backed Celery worker and a scheduler. The real constraint was free hosting. I moved it to Vercel with Neon Postgres, which meant rethinking anything that needed a process running permanently.
+
+## Adapting the design
+
+- **Background jobs.** Serverless has no long-running worker, so Celery tasks run inline in production.
+- **Scheduled jobs.** The daily loan-default check moved from Celery Beat to a Vercel Cron job. It calls an internal endpoint that checks a secret with the same constant-time comparison as the payment webhook.
+- **Rate limiting.** Rate-limit counters moved from Redis to a Postgres-backed cache, so limits still hold across stateless function calls without adding a paid service.
+- **Migrations.** Vercel doesn't run them, so I documented exactly where and how to run them by hand.
+
+## Then every request returned a 500
+
+The first deploy failed on every request. Reading the production logs turned up three separate bugs.
+
+1. **Logging crashed at startup.** Vercel's filesystem is read-only, and the log file handler tried to write to it. Vercel's own environment flag turned out to require an opt-in setting, so I didn't rely on it. The app now test-writes the log directory and falls back to console logging if that fails.
+2. **Vercel loaded the wrong entry point.** The traceback showed `asgi.py`, not the configured `wsgi.py`. When both settings exist, Vercel prefers ASGI. The app uses no async features, so I removed the ASGI setting.
+3. **File uploads silently went to a disk that didn't exist.** The storage setting looked correct, but Django 5.1 removed `DEFAULT_FILE_STORAGE`, and this project runs 5.2, so the setting was never read. The traceback showed Django's built-in file storage handling the save, which gave it away. I replaced it with the modern `STORAGES` setting.
+
+## Result
+
+A production API on free infrastructure, with scheduled jobs, rate limiting and file storage all working. The lesson I keep: when a platform changes the rules (read-only disks, no workers, no migrations), list every assumption the old design made, then check each one against the new platform before the first deploy, not after.

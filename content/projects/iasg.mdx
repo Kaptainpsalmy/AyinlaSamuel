@@ -38,15 +38,53 @@ IASG Cooperative is a savings and loans platform serving members across five aff
 companies: Interguide Air, Interguide Academy, Sabre Travel Network, Wisefair, and GolfView.
 It is **live in production** with a public API and Swagger docs.
 
+## Architecture
+
+Built in ten phases over about seven weeks: authentication, member profiles, savings,
+payments, loans, repayments, the admin portal, notifications and statements, security
+hardening, and deployment.
+
+- **Payments path.** A Flutterwave webhook only triggers processing: the signature is checked
+  in constant time, the payment is re-verified with Flutterwave, and the balance is credited
+  idempotently under a row lock.
+- **One repayment service.** Card repayments and salary deductions change a loan balance
+  through the same code path.
+- **Admin portal.** More than 40 endpoints, three permission tiers, and an append-only audit
+  log that records the admin and IP address for every state-changing action.
+- **Hosting.** Vercel serverless functions with Neon Postgres; the daily loan-default check
+  runs as a Vercel Cron job.
+
 ## What I built
 
 - **Member flows**: signup with admin approval, savings accounts with Flutterwave-backed
-  deposits, loan applications with guarantor sign-off, and repayment (manual or monthly
-  salary-deduction batches).
+  deposits, loan applications with two guarantors who must both accept, and repayment
+  (by card or monthly salary-deduction batches).
 - **Money movement**: dividend crediting, real-time transaction notifications, and member
   statement generation as PDF and CSV.
-- **Admin portal** for staff to run verification, approvals, disbursement, and configuration.
-- Rate limiting, login-lockout protection, and a documented OpenAPI schema.
+- **Loan rules**: eligibility checks that report every failing reason at once (BVN not
+  verified, amount out of range, minimum savings, membership age, an active loan, the
+  cooling-off period), and loan maths in `Decimal` with schedules that close at exactly zero.
+- **Admin portal** for staff to run verification, approvals, disbursement, and payroll.
+- **Security**: BVNs encrypted at rest, per-IP rate limits that return a proper `429`,
+  account lockout after five failed logins, and a documented OpenAPI schema.
+
+## Engineering challenges
+
+- **Moving money without losing it or counting it twice.** Resent webhooks, timeouts, and
+  concurrent requests against one balance. [Read the note](/notes/moving-money-without-counting-it-twice).
+- **Running Django on free serverless hosting**, and the three bugs behind a 500 on every
+  request after the first deploy. [Read the note](/notes/django-on-free-serverless-hosting).
+- **An "invalid account" bug that wasn't in the backend**: the app was sending a bank code
+  that doesn't exist. [Read the note](/notes/the-invalid-account-bug).
+
+## Tradeoffs
+
+- **No background worker.** Serverless has no long-running process, so Celery tasks run
+  inline in production. Simpler and free, at the cost of doing that work inside the request.
+- **Postgres instead of Redis for rate limits.** Counters live in a Postgres-backed cache,
+  which keeps limits working across stateless functions without another paid service.
+- **Migrations by hand.** Vercel doesn't run them, so the exact steps are documented rather
+  than automated.
 
 ## Stack
 
@@ -57,4 +95,13 @@ and drf-spectacular for OpenAPI. Deployed on Vercel.
 ## Proof
 
 The backend is live at the link above, and the Swagger UI is public: it shows the full API
-surface with no login required. The screenshots are the cooperative interface in use.
+surface with no login required. At deployment the project had **416 automated tests at 91%
+coverage**, including end-to-end tests from signup all the way to a fully repaid loan, and
+the OpenAPI schema went from 116 errors to 0. The screenshots are the cooperative
+interface in use.
+
+## Lessons
+
+- A payment notification is a hint, not a fact: verify it with the provider before money moves.
+- A new platform changes old assumptions. Check each one before the first deploy.
+- Copied lists go stale. Read them from the source.

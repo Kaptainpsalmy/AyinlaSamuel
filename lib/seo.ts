@@ -85,6 +85,7 @@ export function personLd() {
     address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
     alumniOf: { "@type": "CollegeOrUniversity", name: site.education.school },
     knowsAbout: allSkills,
+    knowsLanguage: site.languages,
     sameAs: [site.socials.github, site.socials.linkedin, site.socials.twitter],
   };
 }

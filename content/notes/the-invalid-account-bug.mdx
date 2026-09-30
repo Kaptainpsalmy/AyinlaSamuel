@@ -1,0 +1,27 @@
+---
+title: 'The "invalid account" bug that wasn''t in the backend'
+excerpt: 'Every loan applicant got "invalid account", whatever they typed. The backend was correct; the bank code the app sent did not exist.'
+date: 2026-09-30
+tags: [debugging, integrations, payments]
+---
+
+Members applying for a loan on the IASG Cooperative app got *"Could not verify disbursement account: invalid account"*, whatever account number they entered. It looked like a backend bug in the Flutterwave integration.
+
+## Test each piece on its own
+
+I tested every piece in isolation against the real Flutterwave sandbox.
+
+- **The verification code was correct.** Flutterwave's documented test account resolved fine.
+- **The bank code was not.** The code the frontend was sending, `999991`, does not exist in Flutterwave's list of 598 banks and fintechs. The frontend had hardcoded its own bank list, and it had drifted out of date. No account number could ever have verified against that code.
+- **A second problem showed up along the way.** The backend already returned the verified account holder's name, but the app showed it as a barely visible footnote and left it out of the review step. A wrong account could reach final submission unnoticed.
+
+## The fix
+
+- **A live bank-list endpoint.** It proxies Flutterwave's real list and caches it for 24 hours: about 7 seconds on a cold call, 0.1 seconds from cache. It returns `503` when Flutterwave is unreachable, kept separate from a `400` for a bad account.
+- **A verify-before-you-apply endpoint.** It returns the real account holder's name *before* the member commits, so the app can show it for confirmation. It's limited to 10 requests a minute per user, because every call is a paid lookup.
+
+The frontend now reads the bank list from the provider instead of keeping its own copy, and the name check still runs again at submission as the final authority.
+
+## The lesson
+
+When a bug looks like it's in your integration, test the integration with known-good input first. That moved the search from the backend to the data the app was sending. Lists copied from a provider go stale; read them from the source.

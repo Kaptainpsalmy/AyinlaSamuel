@@ -144,6 +144,10 @@
     "title": "About",
     "lead": "{role}, based in {location}.",
     "education": "Education",
+    "languages": "Languages",
+    "langEnglish": "English",
+    "langYoruba": "Yoruba",
+    "langPidgin": "Nigerian Pidgin",
     "certifications": "Certifications",
     "verify": "Verify"
   },

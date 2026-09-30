@@ -1,0 +1,32 @@
+---
+title: 'One missing line stopped referral rewards for six days'
+excerpt: 'Payments succeeded, no error appeared, and referrers silently got nothing. The clue was a record that should have been deleted.'
+date: 2026-09-30
+tags: [backend, debugging, systems]
+---
+
+A payment came in with a referral code. The payment went through. The person who referred it got nothing.
+
+There was no error on screen. The payment was saved. Everything looked fine.
+
+## The clue
+
+The clue was a small checkout record that should have been deleted the moment a payment finished. It was still there, which meant the payment had stopped halfway.
+
+With logging switched on, one more test payment showed it: a crash, *class not found*, in the middle of completing the payment. The file was on disk. But our autoloader, the part of the code that finds files by name, only knew about 13 of our 28 folders, and the fraud check lived in one it didn't know.
+
+## Why nobody saw it
+
+The order of events made it invisible. The payment was saved **before** the crash. Linking the referral, clearing the checkout and paying the reward all came **after** it. So every payment looked successful, and every reward silently disappeared.
+
+It had been happening for six days.
+
+## The fix, and the proof
+
+We mapped all 28 folders, and made the fraud check unable to crash a payment ever again. The next test payment paid its NGN 1,200 reward and the checkout record was cleared: proof that the code now ran to the end.
+
+## The same gap, somewhere else
+
+The next day the same missing mapping turned up again. Database upgrades on two other environments had been failing on every deploy for days, while the health check reported *"status: ok, 0 pending"*.
+
+**A health check that counts what is pending cannot see what is failing.**

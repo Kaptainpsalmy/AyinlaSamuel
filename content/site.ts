@@ -34,6 +34,8 @@ export const site = {
     school: "Ladoke Akintola University of Technology (LAUTECH)",
     location: "Ogbomoso, Nigeria",
   },
+  // Spoken languages as language codes; the About page shows the translated names.
+  languages: ["en", "yo", "pcm"],
 } as const;
 
 /** Primary navigation, matching the reference site's surface. */

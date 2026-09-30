@@ -1,0 +1,28 @@
+---
+title: 'Our prices changed twice a day, and nobody touched them'
+excerpt: 'A bug report that was one sentence long, six ways prices could drift, and the one rule behind the fix: calculate prices when they are saved, not when they are read.'
+date: 2026-09-30
+tags: [payments, backend, design]
+---
+
+*"Last week I checked a campaign and saw one price. This week the price is different. What is wrong?"*
+
+That was the whole bug report. And it was right.
+
+## Where the drift came from
+
+BemaHub already had a system that locks exchange rates at the moment a price is saved, and it locked all nine currencies we support. But it was only connected to a campaign's headline price.
+
+The level prices underneath were worked out every time someone opened the page. When the saved rate for a level was missing, the page quietly asked a live exchange-rate service instead, and that service refreshed every 12 hours.
+
+So the naira price of a level could change twice a day without anyone editing anything.
+
+## The fix
+
+We found six separate ways prices could drift, but the lesson fits in one line: **calculate prices when they are saved, not when they are read.** We now lock a rate snapshot for every level at save time and show exactly that.
+
+That rule became the backbone of everything after. Later, when we froze every price in every currency so a quote can never move, it was the same idea taken all the way.
+
+## Inspect before you patch
+
+The first instruction on that bug report was *"Don't change anything. Just inspect."* That was the right call. The obvious fix would have been to patch the display so the numbers looked stable. The real fix was connecting a lock that already existed, and that only showed up because we traced the problem before touching anything.
